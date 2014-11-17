@@ -30,7 +30,7 @@ Installation
 
 Vapory should work on any platform with Python 2.7+ or Python 3.
 
-You first need to install POV-Ray. See [here](http://www.povray.org/download/) for the Windows binaries. For Linux/Max you must [compile the source](https://github.com/POV-Ray/povray) (tested on Ubuntu, it's easy).
+You first need to install POV-Ray. See `here <http://www.povray.org/download/>`_ for the Windows binaries. For Linux/MacOS you must `compile the source <https://github.com/POV-Ray/povray/>`_ (tested on Ubuntu, it's easy).
 
 If you have PIP installed you can : ::
 
