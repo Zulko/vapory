@@ -20,7 +20,7 @@ Here is how you would draw a purple sphere: ::
     scene.render("purple_sphere.png", width=400, height=300)
 
 
-Vapory enables to pipe the rendered images back into Python and integrates very well in the Python libraries ecosystem (see `this blog post <http://zulko.github.io/blog/2014/09/20/vector-animations-with-python/>`_ for examples)
+Vapory enables to pipe the rendered images back into Python and integrates very well in the Python libraries ecosystem (see `this blog post <http://zulko.github.io/blog/2014/11/13/things-you-can-do-with-python-and-pov-ray/>`_ for examples)
 
 Vapory is an open-source software written by Zulko and released under the MIT licence and hosted on Github_, where Eeveryone is welcome to contribute or ask for support.
 
@@ -30,7 +30,7 @@ Installation
 
 Vapory should work on any platform with Python 2.7+ or Python 3.
 
-You first need to install POV-Ray. See [here](#) for the Windows binaries. For Linux/Max you must [compile the source](#) (tested on Ubuntu, it's easy).
+You first need to install POV-Ray. See [here](http://www.povray.org/download/) for the Windows binaries. For Linux/Max you must [compile the source](https://github.com/POV-Ray/povray) (tested on Ubuntu, it's easy).
 
 If you have PIP installed you can : ::
 
