@@ -1,7 +1,7 @@
 """ vapory/__init__.py """
 
 
-from vapory import *
+from .vapory import *
 from .version import __version__
 
  
