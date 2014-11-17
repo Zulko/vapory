@@ -43,8 +43,8 @@ Vapory can also be installed manually by unzipping the source code in one direct
 Getting started
 ----------------
 
-In Vapory you create a scene, and then render it:
-
+In Vapory you create a scene, and then render it: ::
+    
     scene = Scene( camera = mycamera , # a Camera object
                objects= [light, sphere], # POV-Ray objects (items, lights)
                atmospheric = [fog], # Light-interacting objects
@@ -63,12 +63,12 @@ In Vapory you create a scene, and then render it:
     image = scene.render(width=300, height=500)
 
 
-Objects are defined by passing a list of arguments:
-
+Objects are defined by passing a list of arguments: ::
+    
     camera = Camera( 'location', [0,2,-3], 'look_at', [0,1,2] )
     
 Keep in mind that this snippet will later be transformed into POV-Ray code by converting each argument to a string and placing them on different lines, to make a valid POV-Ray code ::
-
+    
     camera {
         location
         <0,1,0>
