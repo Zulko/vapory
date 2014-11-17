@@ -105,7 +105,7 @@ def render_povstring(string, outfile=None, height=None, width=None,
                                     stdin=subprocess.PIPE,
                                     stdout=subprocess.PIPE)
 
-    out, err = process.communicate(string)
+    out, err = process.communicate(string.encode('ascii'))
     
     if remove_temp:
         os.remove(pov_file)
