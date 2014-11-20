@@ -103,10 +103,6 @@ class Scene:
 
 
 class POVRayElement:
-
-    povray_name = None
-    url = None
-
     def __init__(self, *args):
         self.args = list(args)
     
