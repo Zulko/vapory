@@ -115,7 +115,7 @@ class POVRayElement:
 
     @classmethod
     def help(cls):
-        name = re.sub(r'(?!^)([A-Z])', '_\1', self.__class__.__name__)
+        name = re.sub(r'(?!^)([A-Z])', r'_\1', self.__class__.__name__)
         url = wikiref + name
         webbrowser.open(url)
 
@@ -125,7 +125,7 @@ class POVRayElement:
         return new
 
     def __str__(self):
-        name = re.sub(r'(?!^)([A-Z])', '_\1', self.__class__.__name__).lower()
+        name = re.sub(r'(?!^)([A-Z])', r'_\1', self.__class__.__name__).lower()
         
         return "%s {\n%s \n}" % (name, "\n".join([str(format_if_necessary(e))
                                                   for e in self.args]))
