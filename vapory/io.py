@@ -41,7 +41,7 @@ def ppm_to_numpy(filename=None, buffer=None, byteorder='>'):
     except AttributeError:
         raise ValueError("Not a raw PPM/PGM file: '%s'" % filename)
 
-    cols_per_pixels = 1 if header.startswith("P5") else 3 
+    cols_per_pixels = 1 if header.startswith(b"P5") else 3 
     
     dtype = 'uint8' if int(maxval) < 256 else byteorder+'uint16'
     arr = numpy.frombuffer(buffer, dtype=dtype,
@@ -105,7 +105,7 @@ def render_povstring(string, outfile=None, height=None, width=None,
                                     stdin=subprocess.PIPE,
                                     stdout=subprocess.PIPE)
 
-    out, err = process.communicate(string)
+    out, err = process.communicate(string.encode('ascii'))
     
     if remove_temp:
         os.remove(pov_file)
