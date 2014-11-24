@@ -1,5 +1,6 @@
 import webbrowser # <= to open the POVRay help
 from copy import deepcopy
+import re
 from .io import render_povstring
 
 
@@ -102,10 +103,6 @@ class Scene:
 
 
 class POVRayElement:
-
-    povray_name = None
-    url = None
-
     def __init__(self, *args):
         self.args = list(args)
     
@@ -114,10 +111,8 @@ class POVRayElement:
 
     @classmethod
     def help(cls):
-        if cls.url is None:
-            url = wikiref + cls.__name__
-        else:
-            url = cls.url
+        name = re.sub(r'(?!^)([A-Z])', r'_\1', self.__class__.__name__)
+        url = wikiref + name
         webbrowser.open(url)
 
     def add_args(self, new_args):
@@ -126,10 +121,7 @@ class POVRayElement:
         return new
 
     def __str__(self):
-        if self.povray_name is None:
-            name = self.__class__.__name__.lower()
-        else:
-            name = self.povray_name
+        name = re.sub(r'(?!^)([A-Z])', r'_\1', self.__class__.__name__).lower()
         
         return "%s {\n%s \n}" % (name, "\n".join([str(format_if_necessary(e))
                                                   for e in self.args]))
@@ -146,8 +138,7 @@ class Box(POVRayElement):
 
 class ColorMap(POVRayElement):
     """ ColorMap( [0, color1], [.5, color2], [0.8, color3], [1, color4]) """
-    povray_name = 'color_map'
-    url = wikiref + "Color_Map"
+
     def __str__(self):
         return "color_map { %s }"%("\n".join([ "[ %s ]"%(" ".join(
                                     [str(format_if_necessary(e))  for e in l]))
@@ -188,8 +179,6 @@ class Intersection(POVRayElement):
 class LightSource(POVRayElement):
     """ LightSource( location_xyz, [light_type], 'color', [r,g,b],
                      'point_at', [x,y,z])) """
-    povray_name = 'light_source'
-    url = wikiref + "Light_Source"
 
 class Macro(POVRayElement):
     """ This special class enables to use macros like
