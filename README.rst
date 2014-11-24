@@ -22,7 +22,7 @@ Here is how you would draw a purple sphere: ::
 
 Vapory enables to pipe the rendered images back into Python and integrates very well in the Python libraries ecosystem (see `this blog post <http://zulko.github.io/blog/2014/11/13/things-you-can-do-with-python-and-pov-ray/>`_ for examples)
 
-Vapory is an open-source software written by Zulko_ and released under the MIT licence and hosted on Github_, where Eeveryone is welcome to contribute or ask for support.
+Vapory is an open-source software originally written by Zulko_, released under the MIT licence, and hosted on Github_, where everyone is welcome to contribute or ask for support.
 
 
 Installation
