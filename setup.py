@@ -1,4 +1,5 @@
-# This will try to 
+# This will try to import setuptools. If not here, it will reach for the embedded
+# ez_setup (or the ez_setup package). If none, it fails with a message
 try:
     from setuptools import setup
 except ImportError:
