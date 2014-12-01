@@ -34,7 +34,12 @@ You first need to install POV-Ray. See `here <http://www.povray.org/download/>`_
 
 If you have PIP installed you can : ::
 
-    (sudo) pip install ez_setup vapory
+    (sudo) pip install vapory
+
+If you have neither setuptools nor ez_setup installed the command above will fail, is this case type this before installing: ::
+
+    (sudo) pip install ez_setup
+
 
 Vapory can also be installed manually by unzipping the source code in one directory and typing in a terminal: ::
 
