@@ -10,9 +10,6 @@ except ImportError:
             " neither setuptools nor ez_setup are installed on this computer."
             "\nInstall ez_setup ([sudo] pip install ez_setup) and try again.")
 
-
-from setuptools import setup
-
 from setuptools import setup, find_packages
 
 exec(open('vapory/version.py').read()) # loads __version__
