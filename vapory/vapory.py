@@ -74,7 +74,7 @@ class Scene:
 
     def render(self, outfile=None, height=None, width=None,
                      quality=None, antialiasing=None, remove_temp=True,
-                     auto_camera_angle = True  ):
+                     auto_camera_angle=True, show_window=True):
     
         """ Renders the scene to a PNG, a numpy array, or the IPython Notebook.
 
@@ -99,7 +99,7 @@ class Scene:
             self.camera = self.camera.add_args(['right', [1.0*width/height, 0,0]])
 
         return render_povstring(str(self), outfile, height, width,
-                                quality, antialiasing, remove_temp)
+                                quality, antialiasing, remove_temp, show_window)
 
 
 class POVRayElement:

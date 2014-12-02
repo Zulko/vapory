@@ -53,7 +53,8 @@ def ppm_to_numpy(filename=None, buffer=None, byteorder='>'):
 
 
 def render_povstring(string, outfile=None, height=None, width=None,
-                       quality=None, antialiasing=None, remove_temp=True):
+                     quality=None, antialiasing=None, remove_temp=True,
+                     show_window=True):
     
     """ Renders the provided scene description with POV-Ray.
     
@@ -98,9 +99,12 @@ def render_povstring(string, outfile=None, height=None, width=None,
     if width is not None: cmd.append('+W%d'%width)
     if quality is not None: cmd.append('+Q%d'%quality)
     if antialiasing is not None: cmd.append('+A%f'%antialiasing)
+    if not show_window:
+        cmd.append('-d')
+    else:
+        cmd.append('+d')
     cmd.append("Output_File_Type=%s"%format_type)
     cmd.append("+O%s"%outfile)
-        
     process = subprocess.Popen(cmd, stderr=subprocess.PIPE,
                                     stdin=subprocess.PIPE,
                                     stdout=subprocess.PIPE)
