@@ -74,7 +74,7 @@ class Scene:
 
     def render(self, outfile=None, height=None, width=None,
                      quality=None, antialiasing=None, remove_temp=True,
-                     auto_camera_angle=True, show_window=True):
+                     auto_camera_angle=True, show_window=False):
     
         """ Renders the scene to a PNG, a numpy array, or the IPython Notebook.
 
