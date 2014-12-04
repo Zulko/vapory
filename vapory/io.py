@@ -41,8 +41,8 @@ def ppm_to_numpy(filename=None, buffer=None, byteorder='>'):
     except AttributeError:
         raise ValueError("Not a raw PPM/PGM file: '%s'" % filename)
 
-    cols_per_pixels = 1 if header.startswith(b"P5") else 3 
-    
+    cols_per_pixels = 1 if header.startswith(b"P5") else 3
+
     dtype = 'uint8' if int(maxval) < 256 else byteorder+'uint16'
     arr = numpy.frombuffer(buffer, dtype=dtype,
                            count=int(width)*int(height)*3,
@@ -55,9 +55,9 @@ def ppm_to_numpy(filename=None, buffer=None, byteorder='>'):
 def render_povstring(string, outfile=None, height=None, width=None,
                      quality=None, antialiasing=None, remove_temp=True,
                      show_window=False):
-    
+
     """ Renders the provided scene description with POV-Ray.
-    
+
     Parameters
     ------------
 
@@ -70,7 +70,7 @@ def render_povstring(string, outfile=None, height=None, width=None,
       If outfile is None, a numpy array is returned (if numpy is installed).
       If outfile is 'ipython' and this function is called last in an IPython
       notebook cell, this will print the result in the notebook.
-    
+
     height
       height in pixels
 
@@ -82,7 +82,7 @@ def render_povstring(string, outfile=None, height=None, width=None,
     pov_file = '__temp__.pov'
     with open(pov_file, 'w+') as f:
         f.write(string)
-    
+
     return_np_array = (outfile is None)
     display_in_ipython = (outfile=='ipython')
 
@@ -110,7 +110,7 @@ def render_povstring(string, outfile=None, height=None, width=None,
                                     stdout=subprocess.PIPE)
 
     out, err = process.communicate(string.encode('ascii'))
-    
+
     if remove_temp:
         os.remove(pov_file)
 
@@ -119,7 +119,7 @@ def render_povstring(string, outfile=None, height=None, width=None,
 
     if return_np_array:
         return ppm_to_numpy(buffer=out)
-        
+
     if display_in_ipython:
         if not ipython_found:
             raise("The 'ipython' option only works in the IPython Notebook.")
