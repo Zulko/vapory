@@ -35,4 +35,4 @@ GLOBAL_SCENE_SETTINGS = {
     "Subsurface":{
     "radiosity"      : "off",
     "samples"        : (50,50)},
-} 
+}

@@ -3,24 +3,7 @@ from copy import deepcopy
 import re
 from .io import render_povstring
 
-WIKIREF = "http://wiki.povray.org/content/Reference:"
-
-def vectorize(arr):
-    """ transforms [a, b, c] into string "<a, b, c>"" """
-    return "<%s>" % ",".join([str(e) for e in arr])
-
-def format_if_necessary(e):
-    """ If necessary, replaces -3 by (-3), and [a, b, c] by <a, b, c> """
-
-    if isinstance(e, (int, float)) and e<0:
-        # This format because POVray interprets -3 as a substraction
-        return "( %s )"%str(e)
-    if hasattr(e, '__iter__') and not isinstance(e, str):
-        # lists, tuples, numpy arrays, become '<a,b,c,d >'
-        return vectorize(e)
-    else:
-        return e
-
+from helpers import WIKIREF, vectorize, format_if_necessary
 
 class Scene:
     """ A scene contains Items and can be written to a file.
@@ -107,11 +90,13 @@ class POVRayElement:
         return deepcopy(self)
 
     @classmethod
+    def transformed_name(cls):
+        """ Tranform Sphere=>sphere, and LightSource=>light_source """
+        return re.sub(r'(?!^)([A-Z])', r'_\1', cls.__name__)
+
+    @classmethod
     def help(cls):
-        # Transform LightSource=> Light_Source
-        name = re.sub(r'(?!^)([A-Z])', r'_\1', self.__class__.__name__)
-        url = WIKIREF + name
-        webbrowser.open(url)
+        webbrowser.open(WIKIREF + cls.transformed_name())
 
     def add_args(self, new_args):
         new = self.copy()
@@ -120,7 +105,7 @@ class POVRayElement:
 
     def __str__(self):
         # Tranforms Sphere=>sphere, and LightSource=>light_source
-        name = re.sub(r'(?!^)([A-Z])', r'_\1', self.__class__.__name__).lower()
+        name = self.transformed_name().lower()
 
         return "%s {\n%s \n}" % (name, "\n".join([str(format_if_necessary(e))
                                                   for e in self.args]))
