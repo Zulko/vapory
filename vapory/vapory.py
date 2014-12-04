@@ -3,10 +3,7 @@ from copy import deepcopy
 import re
 from .io import render_povstring
 
-
-
-wikiref = "http://wiki.povray.org/content/Reference:"
-
+WIKIREF = "http://wiki.povray.org/content/Reference:"
 
 def vectorize(arr):
     """ transforms [a, b, c] into string "<a, b, c>"" """
@@ -50,14 +47,14 @@ class Scene:
 
         included = ['#include "%s"'%e for e in self.included]
         defaults = ['#default { %s }'%e for e in self.defaults]
-        
+
         global_settings = ["global_settings{\n%s\n}"%("\n".join(
                            [str(e) for e in self.global_settings]))]
         return '\n'.join([str(e)
                           for l in  [included, self.objects, [self.camera],
                               self.atmospheric, global_settings]
                           for e in l])
-    
+
     def copy(self):
         return deepcopy(self)
 
@@ -75,7 +72,7 @@ class Scene:
     def render(self, outfile=None, height=None, width=None,
                      quality=None, antialiasing=None, remove_temp=True,
                      auto_camera_angle=True, show_window=False):
-    
+
         """ Renders the scene to a PNG, a numpy array, or the IPython Notebook.
 
         Parameters
@@ -86,7 +83,7 @@ class Scene:
           - "myfile.png" to output a PNG file
           - None to output a numpy array (if numpy is installed).
           - 'ipython' (and call this function last in an IPython Notebook)
-        
+
         height
           height in pixels
 
@@ -105,26 +102,26 @@ class Scene:
 class POVRayElement:
     def __init__(self, *args):
         self.args = list(args)
-    
+
     def copy(self):
         return deepcopy(self)
 
     @classmethod
     def help(cls):
-        # Transform LightSource=> Light_Source 
+        # Transform LightSource=> Light_Source
         name = re.sub(r'(?!^)([A-Z])', r'_\1', self.__class__.__name__)
-        url = wikiref + name
+        url = WIKIREF + name
         webbrowser.open(url)
 
     def add_args(self, new_args):
         new = self.copy()
-        new.args += new_args 
+        new.args += new_args
         return new
 
     def __str__(self):
         # Tranforms Sphere=>sphere, and LightSource=>light_source
         name = re.sub(r'(?!^)([A-Z])', r'_\1', self.__class__.__name__).lower()
-        
+
         return "%s {\n%s \n}" % (name, "\n".join([str(format_if_necessary(e))
                                                   for e in self.args]))
 
@@ -145,7 +142,7 @@ class ColorMap(POVRayElement):
         return "color_map { %s }"%("\n".join([ "[ %s ]"%(" ".join(
                                     [str(format_if_necessary(e))  for e in l]))
                                      for l in self.args]))
-        
+
 
 class Cone(POVRayElement):
     """ Cone( )"""
@@ -170,7 +167,7 @@ class Fog(POVRayElement):
 class ImageMap(POVRayElement):
     """ ImageMap('my_image.png') """
     povray_name= 'image_map'
-    url = wikiref+'Image_Map'
+    url = WIKIREF+'Image_Map'
 
 class Interior(POVRayElement):
     """ Interior('I_Glass3') """
@@ -232,3 +229,10 @@ class Triangle(POVRayElement):
 
 class Union(POVRayElement):
     """ Union(obj1, obj2, obj3, *a) """
+
+class Blob(POVRayElement):
+    """ Blob(blob_item1, blob_item2, ...) """
+
+class Prism(POVRayElement):
+    """ Prism('linear_spline', 'linear_sweep', Height_1, Height_2, Number_Of_Points, ...) """
+
