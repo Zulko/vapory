@@ -9,7 +9,7 @@ Vapory
 Vapory is a Python library to render photo-realistic 3D scenes with the free ray-tracing engine `POV-Ray <http://en.wikipedia.org/wiki/POV-Ray/>`_.
 
 Here is how you would draw a purple sphere: ::
-    
+
     from vapory import *
 
     camera = Camera( 'location', [0,2,-3], 'look_at', [0,1,2] )
@@ -49,31 +49,33 @@ Getting started
 ----------------
 
 In Vapory you create a scene, and then render it: ::
-    
+
+    from vapory import *
+
     scene = Scene( camera = mycamera , # a Camera object
                objects= [light, sphere], # POV-Ray objects (items, lights)
                atmospheric = [fog], # Light-interacting objects
                included = ["colors.inc"]) # headers that POV-Ray may need
-    
+
     scene.render("my_scene.png", # output to a PNG image file
       width = 300, height=200, # in pixels. Determines the camera ratio.
       antialiasing = 0.01 # The nearer from zero, the more precise the image.
       quality=1) # quality=1 => no shadow/reflection, quality=10 is 'normal'
 
     # passing 'ipython' as argument at the end of an IPython Notebook cell
-    # will display the picture in the IPython notebook. 
+    # will display the picture in the IPython notebook.
     scene.render('ipython', width=300, height=500)
 
-    # passing no 'file' arguments returns the rendered image as a RGB numpy array 
+    # passing no 'file' arguments returns the rendered image as a RGB numpy array
     image = scene.render(width=300, height=500)
 
 
 Objects are defined by passing a list of arguments: ::
-    
+
     camera = Camera( 'location', [0,2,-3], 'look_at', [0,1,2] )
-    
+
 Keep in mind that this snippet will later be transformed into POV-Ray code by converting each argument to a string and placing them on different lines, to make a valid POV-Ray code ::
-    
+
     camera {
         location
         <0,1,0>
@@ -95,7 +97,7 @@ Missing Features
 For the moment a many features (Sphere, Fog, etc.) are implemented but not all of them (POV-Ray has a LOT of possible shapes and capabilities).
 
 It is really easy to add new features, because they all basically do the same thing, are just empty classes. For instance here is how Camera is implemented: ::
-    
+
     class Camera(POVRayElement):
         """ Camera([type,]  'location', [x,y,z], 'look_at', [x,y,z]) """
 
