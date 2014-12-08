@@ -115,7 +115,8 @@ def render_povstring(string, outfile=None, height=None, width=None,
         os.remove(pov_file)
 
     if process.returncode:
-        raise IOError("POVRay rendering failed with the following error: "+err)
+        print(type(err), err)
+        raise IOError("POVRay rendering failed with the following error: "+err.decode('ascii'))
 
     if return_np_array:
         return ppm_to_numpy(buffer=out)
