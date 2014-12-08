@@ -3,7 +3,7 @@ from copy import deepcopy
 import re
 from .io import render_povstring
 
-from helpers import WIKIREF, vectorize, format_if_necessary
+from .helpers import WIKIREF, vectorize, format_if_necessary
 
 class Scene:
     """ A scene contains Items and can be written to a file.
