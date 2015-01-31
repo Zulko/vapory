@@ -54,7 +54,7 @@ def ppm_to_numpy(filename=None, buffer=None, byteorder='>'):
 
 def render_povstring(string, outfile=None, height=None, width=None,
                      quality=None, antialiasing=None, remove_temp=True,
-                     show_window=False):
+                     show_window=False, tempfile=None):
 
     """ Renders the provided scene description with POV-Ray.
 
@@ -79,7 +79,7 @@ def render_povstring(string, outfile=None, height=None, width=None,
 
     """
 
-    pov_file = '__temp__.pov'
+    pov_file = tempfile or '__temp__.pov'
     with open(pov_file, 'w+') as f:
         f.write(string)
 
