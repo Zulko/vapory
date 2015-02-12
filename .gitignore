@@ -42,3 +42,8 @@ nosetests.xml
 # Pipy codes
 
 .pypirc
+
+# povray output
+*.pov
+*.ppm
+*.png

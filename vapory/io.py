@@ -89,12 +89,19 @@ def render_povstring(string, outfile=None, height=None, width=None,
     format_type = "P" if return_np_array else "N"
 
     if return_np_array:
-        outfile='-'
+        if os.name=='nt':
+            outfile='__temp__.ppm'
+        else :
+            outfile='-'
 
     if display_in_ipython:
         outfile = '__temp_ipython__.png'
 
-    cmd = [POVRAY_BINARY, pov_file]
+    cmd = [POVRAY_BINARY]
+    if os.name=='nt':
+        cmd.append('/EXIT')
+        cmd.append('/RENDER')
+    cmd.append(pov_file)
     if height is not None: cmd.append('+H%d'%height)
     if width is not None: cmd.append('+W%d'%width)
     if quality is not None: cmd.append('+Q%d'%quality)
@@ -105,12 +112,13 @@ def render_povstring(string, outfile=None, height=None, width=None,
         cmd.append('+d')
     cmd.append("Output_File_Type=%s"%format_type)
     cmd.append("+O%s"%outfile)
+    
     process = subprocess.Popen(cmd, stderr=subprocess.PIPE,
-                                    stdin=subprocess.PIPE,
-                                    stdout=subprocess.PIPE)
+                                   stdin=subprocess.PIPE,
+                                   stdout=subprocess.PIPE)
 
     out, err = process.communicate(string.encode('ascii'))
-
+    
     if remove_temp:
         os.remove(pov_file)
 
@@ -119,7 +127,10 @@ def render_povstring(string, outfile=None, height=None, width=None,
         raise IOError("POVRay rendering failed with the following error: "+err.decode('ascii'))
 
     if return_np_array:
-        return ppm_to_numpy(buffer=out)
+        if os.name=='nt':
+            return ppm_to_numpy(filename=outfile)
+        else:
+            return ppm_to_numpy(buffer=out)
 
     if display_in_ipython:
         if not ipython_found:

@@ -11,4 +11,9 @@ scene = Scene(
                 Sphere( [0, 1, 2] , 2,   Texture( Pigment( 'color', [1,0,1])))]
 )
 
-scene.render("sphere.png", width = 600, height=400, remove_temp=0)
+print(("start rendering"))
+
+scene.render("sphere1.png", width = 600, height=400, remove_temp=0)
+print(("done."))
+
+scene.render("sphere2.png", width =1200, height=800, remove_temp=0)
