@@ -54,7 +54,7 @@ def ppm_to_numpy(filename=None, buffer=None, byteorder='>'):
 
 def render_povstring(string, outfile=None, height=None, width=None,
                      quality=None, antialiasing=None, remove_temp=True,
-                     show_window=False, tempfile=None):
+                     show_window=False, tempfile=None,exit_when_done=True):
 
     """ Renders the provided scene description with POV-Ray.
 
@@ -99,7 +99,8 @@ def render_povstring(string, outfile=None, height=None, width=None,
 
     cmd = [POVRAY_BINARY]
     if os.name=='nt':
-        cmd.append('/EXIT')
+        if exit_when_done:
+            cmd.append('/EXIT')
         cmd.append('/RENDER')
     cmd.append(pov_file)
     if height is not None: cmd.append('+H%d'%height)
@@ -118,6 +119,7 @@ def render_povstring(string, outfile=None, height=None, width=None,
                                    stdout=subprocess.PIPE)
 
     out, err = process.communicate(string.encode('ascii'))
+
     
     if remove_temp:
         os.remove(pov_file)
