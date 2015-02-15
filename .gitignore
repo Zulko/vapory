@@ -47,3 +47,5 @@ nosetests.xml
 *.pov
 *.ppm
 *.png
+
+Thumbs.db
