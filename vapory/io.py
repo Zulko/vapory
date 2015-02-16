@@ -19,7 +19,7 @@ try:
 except:
     ipython_found=False
 
-def ppm_to_numpy(filename=None, buffer=None, byteorder='>'):
+def ppm_to_numpy(filename=None, buffer=None, byteorder='>',bitspercolor=None):
     """Return image data from a raw PGM/PPM file as numpy array.
 
     Format specification: http://netpbm.sourceforge.net/doc/pgm.html
@@ -43,7 +43,11 @@ def ppm_to_numpy(filename=None, buffer=None, byteorder='>'):
 
     cols_per_pixels = 1 if header.startswith(b"P5") else 3
 
-    dtype = 'uint8' if int(maxval) < 256 else byteorder+'uint16'
+    
+    dtype = 'uint8' 
+    if int(maxval) >= 256 or bitspercolor==16:
+        dtype=byteorder+'u2'
+    
     arr = numpy.frombuffer(buffer, dtype=dtype,
                            count=int(width)*int(height)*3,
                            offset=len(header))
@@ -52,9 +56,9 @@ def ppm_to_numpy(filename=None, buffer=None, byteorder='>'):
 
 
 
-def render_povstring(string, outfile=None, height=None, width=None,
+def render_povstring(string, outfile=None, height=None, width=None,bitspercolor=None,
                      quality=None, antialiasing=None, remove_temp=True,
-                     show_window=False, tempfile=None):
+                     show_window=False, tempfile=None,exit_when_done=True):
 
     """ Renders the provided scene description with POV-Ray.
 
@@ -89,28 +93,39 @@ def render_povstring(string, outfile=None, height=None, width=None,
     format_type = "P" if return_np_array else "N"
 
     if return_np_array:
-        outfile='-'
+        if os.name=='nt':
+            outfile='__temp__.ppm'
+        else :
+            outfile='-'
 
     if display_in_ipython:
         outfile = '__temp_ipython__.png'
 
-    cmd = [POVRAY_BINARY, pov_file]
-    if height is not None: cmd.append('+H%d'%height)
-    if width is not None: cmd.append('+W%d'%width)
-    if quality is not None: cmd.append('+Q%d'%quality)
-    if antialiasing is not None: cmd.append('+A%f'%antialiasing)
+    cmd = [POVRAY_BINARY]
+    if os.name=='nt':
+        if exit_when_done:
+            cmd.append('/EXIT')
+        cmd.append('/RENDER')
+    cmd.append(pov_file)
+    if height is not None: cmd.append('+H{}'.format(height))
+    if width is not None: cmd.append('+W{}'.format(width))
+    if quality is not None: cmd.append('+Q{}'.format(quality))
+    if antialiasing is not None: cmd.append('+A{}'.format(antialiasing))
     if not show_window:
         cmd.append('-d')
     else:
         cmd.append('+d')
+    if bitspercolor is not None: cmd.append("Bits_per_color={}".format(bitspercolor))
     cmd.append("Output_File_Type=%s"%format_type)
     cmd.append("+O%s"%outfile)
+    
     process = subprocess.Popen(cmd, stderr=subprocess.PIPE,
-                                    stdin=subprocess.PIPE,
-                                    stdout=subprocess.PIPE)
+                                   stdin=subprocess.PIPE,
+                                   stdout=subprocess.PIPE)
 
     out, err = process.communicate(string.encode('ascii'))
 
+    
     if remove_temp:
         os.remove(pov_file)
 
@@ -119,7 +134,10 @@ def render_povstring(string, outfile=None, height=None, width=None,
         raise IOError("POVRay rendering failed with the following error: "+err.decode('ascii'))
 
     if return_np_array:
-        return ppm_to_numpy(buffer=out)
+        if os.name=='nt':
+            return ppm_to_numpy(filename=outfile,bitspercolor=bitspercolor)
+        else:
+            return ppm_to_numpy(buffer=out,bitspercolor=bitspercolor)
 
     if display_in_ipython:
         if not ipython_found:
