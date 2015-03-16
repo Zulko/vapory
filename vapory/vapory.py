@@ -221,3 +221,14 @@ class Blob(POVRayElement):
 class Prism(POVRayElement):
     """ Prism('linear_spline', 'linear_sweep', Height_1, Height_2, Number_Of_Points, ...) """
 
+class VertexVectors(POVRayElement):
+    """ VertexVectors()"""
+
+class FaceIndices(POVRayElement):
+    """ FaceIndices()"""
+
+class Mesh2(POVRayElement):
+    """ Mesh2()"""
+
+
+
