@@ -100,9 +100,9 @@ def render_povstring(string, outfile=None, height=None, width=None,
     if quality is not None: cmd.append('+Q%d'%quality)
     if antialiasing is not None: cmd.append('+A%f'%antialiasing)
     if not show_window:
-        cmd.append('-d')
+        cmd.append('-D')
     else:
-        cmd.append('+d')
+        cmd.append('+D')
     cmd.append("Output_File_Type=%s"%format_type)
     cmd.append("+O%s"%outfile)
     process = subprocess.Popen(cmd, stderr=subprocess.PIPE,
