@@ -6,7 +6,7 @@
 Vapory
 ========
 
-Vapory is a Python library to render photo-realistic 3D scenes with the free ray-tracing engine `POV-Ray <http://en.wikipedia.org/wiki/POV-Ray/>`_.
+Vapory is a Python library to render photo-realistic 3D scenes with the free ray-tracing engine `POV-Ray <http://en.wikipedia.org/wiki/POV-Ray>`_.
 
 Here is how you would draw a purple sphere: ::
 
