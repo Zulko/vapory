@@ -75,7 +75,7 @@ class Scene:
 
         """
 
-        if auto_camera_angle and width is not None:
+        if auto_camera_angle and width is not None and 'right' not in self.camera.args:
             self.camera = self.camera.add_args(['right', [1.0*width/height, 0,0]])
 
         return render_povstring(str(self), outfile, height, width,
