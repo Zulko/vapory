@@ -1,6 +1,7 @@
 import webbrowser # <= to open the POVRay help
 from copy import deepcopy
 import re
+import os
 from .io import render_povstring
 
 from .helpers import WIKIREF, vectorize, format_if_necessary
@@ -54,7 +55,9 @@ class Scene:
 
     def render(self, outfile=None, height=None, width=None,
                      quality=None, antialiasing=None, remove_temp=True,
-                     auto_camera_angle=True, show_window=False, tempfile=None):
+                     auto_camera_angle=True, show_window=False,
+                     tempfile=None, evaluate=True,
+                     use_custom_povray=False):
 
         """ Renders the scene to a PNG, a numpy array, or the IPython Notebook.
 
@@ -78,8 +81,15 @@ class Scene:
         if auto_camera_angle and width is not None:
             self.camera = self.camera.add_args(['right', [1.0*width/height, 0,0]])
 
-        return render_povstring(str(self), outfile, height, width,
-                                quality, antialiasing, remove_temp, show_window, tempfile)
+        if evaluate:
+            return render_povstring(str(self), outfile, height, width,
+                                quality, antialiasing, remove_temp,
+                                show_window, tempfile, use_custom_povray)
+        else:
+            pov_file = os.path.splitext(outfile)[0] + '.pov'
+            with open(pov_file, 'w+') as f:
+                f.write(str(self))
+            return pov_file
 
 
 class POVRayElement:
