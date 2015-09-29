@@ -224,6 +224,9 @@ class Prism(POVRayElement):
 class VertexVectors(POVRayElement):
     """ VertexVectors()"""
 
+class NormalVectors(POVRayElement):
+    """ NormalVectors()"""
+
 class FaceIndices(POVRayElement):
     """ FaceIndices()"""
 
