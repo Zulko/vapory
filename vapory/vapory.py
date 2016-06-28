@@ -17,24 +17,27 @@ class Scene:
 
     """
     def __init__(self, camera, objects=[], atmospheric=[],
-                 included=[], defaults=[], global_settings=[]):
+                 included=[], defaults=[], global_settings=[],
+                 declares=[]):
 
         self.camera = camera
         self.objects = objects
         self.atmospheric = atmospheric
         self.included = included
         self.defaults = defaults
+        self.declares = declares
         self.global_settings = global_settings
 
     def __str__(self):
 
         included = ['#include "%s"'%e for e in self.included]
         defaults = ['#default { %s }'%e for e in self.defaults]
+        declares = ['#declare %s;'%e for e in self.declares]
 
         global_settings = ["global_settings{\n%s\n}"%("\n".join(
                            [str(e) for e in self.global_settings]))]
         return '\n'.join([str(e)
-                          for l in  [included, self.objects, [self.camera],
+                          for l in  [included, declares, self.objects, [self.camera],
                               self.atmospheric, global_settings]
                           for e in l])
 
