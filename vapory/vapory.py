@@ -238,5 +238,6 @@ class FaceIndices(POVRayElement):
 class Mesh2(POVRayElement):
     """ Mesh2()"""
 
-
+class Media(POVRayElement):
+    """ Media()"""
 
