@@ -241,3 +241,5 @@ class Mesh2(POVRayElement):
 class Media(POVRayElement):
     """ Media()"""
 
+class Torus(POVRayElement):
+    """Torus()"""
