@@ -243,3 +243,6 @@ class Media(POVRayElement):
 
 class Torus(POVRayElement):
     """Torus()"""
+
+class Disc(POVRayElement):
+    """Disc()"""
