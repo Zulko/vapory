@@ -246,3 +246,6 @@ class Torus(POVRayElement):
 
 class Disc(POVRayElement):
     """Disc()"""
+
+class SmoothTriangle(POVRayElement):
+    """SmoothTriangle()"""
