@@ -249,3 +249,6 @@ class Disc(POVRayElement):
 
 class SmoothTriangle(POVRayElement):
     """SmoothTriangle()"""
+
+class Irid(POVRayElement):
+    """Irid()"""
