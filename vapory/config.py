@@ -1,6 +1,8 @@
 import os
 
-POVRAY_BINARY = ("povray.exe" if os.name=='nt' else "povray")
+POVRAY_BINARY = os.environ.get('POVRAY_BINARY') or (
+    "povray.exe" if os.name == 'nt' else "povray"
+)
 
 GLOBAL_SCENE_SETTINGS = {
     "charset"        : "ascii",
