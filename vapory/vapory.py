@@ -1,5 +1,6 @@
 import webbrowser # <= to open the POVRay help
 from copy import deepcopy
+from itertools import chain
 import re
 from .io import render_povstring
 
@@ -50,9 +51,8 @@ class Scene:
         return new
 
     def add_objects(self, objs):
-
         new = self.copy()
-        new.objects +=  objs
+        new.objects += objs
         return new
 
     def render(self, outfile=None, height=None, width=None,
@@ -88,8 +88,11 @@ class Scene:
 
 
 class POVRayElement:
-    def __init__(self, *args):
-        self.args = list(args)
+    def __init__(self, *args, **kwargs):
+        args = list(args)
+        # flat key arguments - Obj(value='x') -> Obj('value', 'x')
+        args += list(chain.from_iterable(kwargs.items()))
+        self.args = args
 
     def copy(self):
         return deepcopy(self)
