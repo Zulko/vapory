@@ -6,15 +6,12 @@ from vapory import *
 sun = LightSource([1000,2500,-2500], 'color', 'White')
 
 
-sky = Sphere( [0,0,0],1, 'hollow',
-              Texture(  Pigment( 'gradient', [0,1,0],
-                                  ColorMap([0.0, 'color', 'White'],
-                                           [0.5, 'color', 'CadetBlue'],
-                                           [1.0, 'color', 'CadetBlue']),
-                                  "quick_color", "White"),
-                        Finish( 'ambient', 1, 'diffuse', 0)
-                      ),
-       'scale', 10000)
+sky = SkySphere(Pigment( 'gradient', [0,1,0],
+                         ColorMap([0.0, 'color', 'White'],
+                                  [0.5, 'color', 'CadetBlue'],
+                                  [1.0, 'color', 'CadetBlue']),
+                         "quick_color", "White"))
+
 
 
 ground = Plane( [0,1,0], 0,
