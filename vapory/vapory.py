@@ -205,6 +205,9 @@ class Radiosity(POVRayElement):
     (put in global settings)"""
 
 
+class SkySphere(POVRayElement):
+    """ SkySphere( Pigment(color_rgb) ) """
+
 class Sphere(POVRayElement):
     """ Sphere(location_xyz, radius, *a) """
 
