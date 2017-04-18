@@ -78,6 +78,13 @@ def render_povstring(string, outfile=None, height=None, width=None,
     width
       width in pixels
 
+    output_alpha
+      If true, the background will be transparent,
+    rather than the default black background.  Note
+    that this option is ignored if rendering to a
+    numpy array, due to limitations of the intermediate
+    ppm format.
+
     """
 
     pov_file = tempfile or '__temp__.pov'

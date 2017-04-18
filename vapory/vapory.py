@@ -77,6 +77,13 @@ class Scene:
         width
           width in pixels
 
+        output_alpha
+          If true, the background will be transparent,
+        rather than the default black background.  Note
+        that this option is ignored if rendering to a
+        numpy array, due to limitations of the intermediate
+        ppm format.
+
         """
 
         if auto_camera_angle and width is not None:
