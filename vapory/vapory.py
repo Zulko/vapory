@@ -38,7 +38,7 @@ class Scene:
         global_settings = ["global_settings{\n%s\n}"%("\n".join(
                            [str(e) for e in self.global_settings]))]
         return '\n'.join([str(e)
-                          for l in  [included, declares, self.objects, [self.camera],
+                          for l in  [included, declares, defaults, self.objects, [self.camera],
                               self.atmospheric, global_settings]
                           for e in l])
 
