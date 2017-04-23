@@ -1,5 +1,6 @@
 import webbrowser # <= to open the POVRay help
 from copy import deepcopy
+from itertools import chain
 import re
 from .io import render_povstring
 
@@ -37,7 +38,7 @@ class Scene:
         global_settings = ["global_settings{\n%s\n}"%("\n".join(
                            [str(e) for e in self.global_settings]))]
         return '\n'.join([str(e)
-                          for l in  [included, declares, self.objects, [self.camera],
+                          for l in  [included, declares, defaults, self.objects, [self.camera],
                               self.atmospheric, global_settings]
                           for e in l])
 
@@ -50,15 +51,14 @@ class Scene:
         return new
 
     def add_objects(self, objs):
-
         new = self.copy()
-        new.objects +=  objs
+        new.objects += objs
         return new
 
     def render(self, outfile=None, height=None, width=None,
                      quality=None, antialiasing=None, remove_temp=True,
                      auto_camera_angle=True, show_window=False, tempfile=None,
-                     includedirs=None):
+                     includedirs=None, alpha=None, additional_args=None):
 
         """ Renders the scene to a PNG, a numpy array, or the IPython Notebook.
 
@@ -84,12 +84,17 @@ class Scene:
 
         return render_povstring(str(self), outfile, height, width,
                                 quality, antialiasing, remove_temp, show_window,
-                                tempfile, includedirs)
+                                tempfile, includedirs,
+                                alpha=alpha,
+                                additional_args=additional_args)
 
 
 class POVRayElement:
-    def __init__(self, *args):
-        self.args = list(args)
+    def __init__(self, *args, **kwargs):
+        args = list(args)
+        # flat key arguments - Obj(value='x') -> Obj('value', 'x')
+        args += list(chain.from_iterable(kwargs.items()))
+        self.args = args
 
     def copy(self):
         return deepcopy(self)
