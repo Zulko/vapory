@@ -54,7 +54,8 @@ def ppm_to_numpy(filename=None, buffer=None, byteorder='>'):
 
 def render_povstring(string, outfile=None, height=None, width=None,
                      quality=None, antialiasing=None, remove_temp=True,
-                     show_window=False, tempfile=None, includedirs=None):
+                     show_window=False, tempfile=None, includedirs=None,
+                     output_alpha=False):
 
     """ Renders the provided scene description with POV-Ray.
 
@@ -76,6 +77,13 @@ def render_povstring(string, outfile=None, height=None, width=None,
 
     width
       width in pixels
+
+    output_alpha
+      If true, the background will be transparent,
+    rather than the default black background.  Note
+    that this option is ignored if rendering to a
+    numpy array, due to limitations of the intermediate
+    ppm format.
 
     """
 
@@ -99,6 +107,7 @@ def render_povstring(string, outfile=None, height=None, width=None,
     if width is not None: cmd.append('+W%d'%width)
     if quality is not None: cmd.append('+Q%d'%quality)
     if antialiasing is not None: cmd.append('+A%f'%antialiasing)
+    if output_alpha: cmd.append('Output_Alpha=on')
     if not show_window:
         cmd.append('-D')
     else:
