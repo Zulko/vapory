@@ -8,7 +8,9 @@ Vapory
 
 Vapory is a Python library to render photo-realistic 3D scenes with the free ray-tracing engine `POV-Ray <http://en.wikipedia.org/wiki/POV-Ray>`_.
 
-Here is how you would draw a purple sphere: ::
+Here is how you would draw a purple sphere:
+
+.. code:: python
 
     from vapory import *
 
@@ -48,7 +50,9 @@ Vapory can also be installed manually by unzipping the source code in one direct
 Getting started
 ----------------
 
-In Vapory you create a scene, and then render it: ::
+In Vapory you create a scene, and then render it:
+
+.. code:: python
 
     from vapory import *
 
