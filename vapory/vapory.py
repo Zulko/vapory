@@ -123,6 +123,15 @@ class POVRayElement:
                                                   for e in self.args]))
 
 
+class POVRayMap(POVRayElement):
+    def __str__(self):
+        name = self.transformed_name().lower()
+        return "%s { %s }"%(name,
+                            "\n".join([ "[ %s ]"%(" ".join(
+                                [str(format_if_necessary(e)) for e in l]))
+                                        for l in self.args]))
+
+
 # =============================================================================
 
 
@@ -132,18 +141,11 @@ class Background(POVRayElement):
 class Box(POVRayElement):
     """ Box element. Box(corner1_xyz, corner2_xyz, *a) """
 
-class ColorMap(POVRayElement):
+class ColorMap(POVRayMap):
     """ ColorMap( [0, color1], [.5, color2], [0.8, color3], [1, color4]) """
-
-    def __str__(self):
-        return "color_map { %s }"%("\n".join([ "[ %s ]"%(" ".join(
-                                    [str(format_if_necessary(e))  for e in l]))
-                                     for l in self.args]))
-
 
 class Cone(POVRayElement):
     """ Cone( )"""
-
 
 class Camera(POVRayElement):
     """ Camera([type,]  'location', [x,y,z], 'look_at', [x,y,z]) """
@@ -193,9 +195,14 @@ class Merge(POVRayElement):
 class Normal(POVRayElement):
     """ Normal()s"""
 
+class NormalMap(POVRayMap):
+    """ NormalMap( [0, normal1], [.5, normal2], [0.8, normal3], [1, normal4]) """
+
 class Pigment(POVRayElement):
     """ Pigment(color_xyz) """
 
+class PigmentMap(POVRayMap):
+    """ PigmentMap( [0, pigment1], [.5, pigment2], [0.8, pigment3], [1, pigment4]) """
 
 class Plane(POVRayElement):
     """ Plane(normal_xyz, distance, *a) """
@@ -211,6 +218,8 @@ class Radiosity(POVRayElement):
     """ Radiosity(...)
     (put in global settings)"""
 
+class SlopeMap(POVRayMap):
+    """ SlopeMap( [0, slope1], [.5, slope2], [0.8, slope3], [1, slope4]) """
 
 class SkySphere(POVRayElement):
     """ SkySphere( Pigment(color_rgb) ) """
@@ -223,6 +232,9 @@ class Text(POVRayElement):
 
 class Texture(POVRayElement):
     """ Texture ( Pigment(color_rgb), 'phong', 0.1, 'reflection', 0.5) """
+
+class TextureMap(POVRayMap):
+    """ TextureMap( [0, texture1], [.5, texture2], [0.8, texture3], [1, texture4]) """
 
 class Triangle(POVRayElement):
     """ Triangle() """
