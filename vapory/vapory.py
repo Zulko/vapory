@@ -249,13 +249,13 @@ class Prism(POVRayElement):
     """ Prism('linear_spline', 'linear_sweep', Height_1, Height_2, Number_Of_Points, ...) """
 
 class VertexVectors(POVRayElement):
-    """ VertexVectors()"""
+    """ VertexVectors(len(VertexList), *VertexList)"""
 
 class NormalVectors(POVRayElement):
     """ NormalVectors()"""
 
 class FaceIndices(POVRayElement):
-    """ FaceIndices()"""
+    """ FaceIndices(len(FaceList), *FaceList)"""
 
 class Mesh2(POVRayElement):
     """ Mesh2()"""
@@ -263,3 +263,8 @@ class Mesh2(POVRayElement):
 class Media(POVRayElement):
     """ Media()"""
 
+class TextureList(POVRayElement):
+    """ TextureList() """
+
+class ClippedBy(POVRayElement):
+    """ ClippedBy() """
