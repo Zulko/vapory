@@ -107,8 +107,8 @@ class POVRayElement:
         return re.sub(r'(?!^)([A-Z])', r'_\1', cls.__name__)
 
     @classmethod
-    def help(cls):
-        webbrowser.open(WIKIREF + cls.transformed_name())
+    def help(self):
+        webbrowser.open(WIKIREF + self.transformed_name())
 
     def add_args(self, new_args):
         new = self.copy()
@@ -131,53 +131,6 @@ class POVRayMap(POVRayElement):
                                 [str(format_if_necessary(e)) for e in l]))
                                         for l in self.args]))
 
-
-# =============================================================================
-
-
-class Background(POVRayElement):
-    """ Background element. Background(color, *a)."""
-
-class Box(POVRayElement):
-    """ Box element. Box(corner1_xyz, corner2_xyz, *a) """
-
-class ColorMap(POVRayMap):
-    """ ColorMap( [0, color1], [.5, color2], [0.8, color3], [1, color4]) """
-
-class Cone(POVRayElement):
-    """ Cone( )"""
-
-class Camera(POVRayElement):
-    """ Camera([type,]  'location', [x,y,z], 'look_at', [x,y,z]) """
-
-class Cylinder(POVRayElement):
-    """ Cylinder([type,]  'location', [x,y,z], 'look_at', [x,y,z]) """
-
-class Difference(POVRayElement):
-    """ Difference(object1, object2, *a) """
-
-class Finish(POVRayElement):
-    """ Finish('phong', 1, 'brilliance', 0.9, 'ambient', 0.5) """
-
-class Fog(POVRayElement):
-    """ Fog('fog_type',   2, 'distance', 20, 'color',     [1.00,0.98,0.9],
-          'fog_offset', 0.1, 'fog_alt', 1, 'turbulence', 1.8) """
-
-class ImageMap(POVRayElement):
-    """ ImageMap('my_image.png') """
-    povray_name= 'image_map'
-    url = WIKIREF+'Image_Map'
-
-class Interior(POVRayElement):
-    """ Interior('I_Glass3') """
-
-class Intersection(POVRayElement):
-    """ Intersection(obj1, obj2, *a) """
-
-class LightSource(POVRayElement):
-    """ LightSource( location_xyz, [light_type], 'color', [r,g,b],
-                     'point_at', [x,y,z])) """
-
 class Macro(POVRayElement):
     """ This special class enables to use macros like
     Tetrahedron_by_Corners(P,Q,R,S, R1, R2, filled), with the syntax
@@ -188,83 +141,990 @@ class Macro(POVRayElement):
         return "%s( %s)"%(self.args[0], " , ".join([str(format_if_necessary(e))
                                                    for e in self.args[1:]]))
 
-class Merge(POVRayElement):
-    """ Merge(object1, object2, *a) """
+# =============================================================================
+# =============================================================================
+# ======= Included classes In the order they appear in POV help files =========
+# =============================================================================
+# =============================================================================
+
+class Spline(POVRayElement):
+    """Spline(
+             *[SPLINE_IDENTIFIER] |
+             *[SPLINE_TYPE] |
+             *[Val_1, [Point_1],
+             Val_2, [Point_2],
+             ...
+             Val_n, [Point_n]]
+             )
+       SPLINE_TYPE:
+         linear_spline | quadratic_spline | cubic_spline | natural_spline
+       SPLINE_USAGE:
+         MySpline(Val) | MySpline(Val, SPLINE_TYPE)
+    """
+
+class Camera(POVRayElement):
+    """Camera( *[CAMERA_ITEMS...] )
+       CAMERA_ITEMS:
+         CAMERA_TYPE | CAMERA_VECTOR | CAMERA_MODIFIER |
+         CAMERA_IDENTIFIER
+       CAMERA_TYPE:
+         'perspective'  | 'orthographic'  | MeshCamera(MESHCAM_MODIFIERS) | 'fisheye'  | 'ultra_wide_angle'  |
+         'omnimax'  | 'panoramic'  | 'cylinder', CylinderType | 'spherical'
+       CAMERA_VECTOR:
+         'location', [Location] | 'right', [Right] | 'up', [Up] |
+         'direction', [Direction] | 'sky', [Sky]
+       CAMERA_MODIFIER:
+         'angle', HORIZONTAL,  *[VERTICAL] | 'look_at', [Look_At] |
+         'blur_samples' ,  *[MIN_SAMPLES,] MAX_SAMPLES | 'aperture', Size |
+         'focal_point', [Point] | 'confidence', Blur_Confidence |
+         'variance', Blur_Variance | *[Bokeh(Pigment(BOKEH))] |
+         NORMAL | TRANSFORMATION | *[MESHCAM_SMOOTH]
+       MESHCAM_MODIFIERS:
+         'rays', 'per'  'pixel'  & 'distribution', 'type'  & *['max', 'distance' ] & MESH_OBJECT & *[MESH_OBJECT...]
+       BOKEH:
+         'a', COLOR_VECTOR 'in', 'the'  'range', 'of'  [0,0,0] ... [1,1,0]
+       MESHCAM_SMOOTH:
+         'optional', 'smooth'  'modifier', 'valid'  'only', 'when'  'using', 'mesh_camera' """
 
 
-class Normal(POVRayElement):
-    """ Normal()s"""
+class Bokeh(POVRayElement):
+    """Bokeh( Pigment() )
+    """
 
-class NormalMap(POVRayMap):
-    """ NormalMap( [0, normal1], [.5, normal2], [0.8, normal3], [1, normal4]) """
 
-class Pigment(POVRayElement):
-    """ Pigment(color_xyz) """
+class Background(POVRayElement):
+  """Background(COLOR)"""
 
-class PigmentMap(POVRayMap):
-    """ PigmentMap( [0, pigment1], [.5, pigment2], [0.8, pigment3], [1, pigment4]) """
 
-class Plane(POVRayElement):
-    """ Plane(normal_xyz, distance, *a) """
+class Fog(POVRayElement):
+    """Fog( *[FOG_IDENTIFIER],  *[FOG_ITEMS...] )
+       FOG_ITEMS:
+         'fog_type', Fog_Type | 'distance', Distance | COLOR |
+         'turbulence', [Turbulence] | 'turb_depth', Turb_Depth |
+         'omega', Omega | 'lambda', Lambda | 'octaves', Octaves |
+         'fog_offset', Fog_Offset | 'fog_alt', Fog_Alt |
+         'up', [Fog_Up] | TRANSFORMATION"""
 
-class Polygon(POVRayElement):
-    """ Polygon(nsides, vertice_xy1, vertice_xy2, ...) """
 
-class Object(POVRayElement):
-    """ Object(some_povrayelement, 'translate', [x,y,z] ) """
+class SkySphere(POVRayElement):
+    """SkySphere( *[SKY_SPHERE_IDENTIFIER],  *[SKY_SPHERE_ITEMS...] )
+       SKY_SPHERE_ITEM:
+         PIGMENT | TRANSFORMATION | *[emission]"""
+
+
+class Rainbow(POVRayElement):
+    """Rainbow( *[RAINBOW_IDENTIFIER],  *[RAINBOW_ITEMS...] )
+       RAINBOW_ITEM:
+         'direction', [Dir] | 'angle', Angle | 'width', Width |
+         'distance', Distance | COLOR_MAP | 'jitter', Jitter | 'up', [Up] |
+         'arc_angle', Arc_Angle | 'falloff_angle', Falloff_Angle"""
+
+
+class LightSource(POVRayElement):
+    """LightSource(
+           [Location], COLOR
+           *[LIGHT_MODIFIERS...]
+           )
+       LIGHT_MODIFIER:
+         LIGHT_TYPE | SPOTLIGHT_ITEM | AREA_LIGHT_ITEMS |
+         GENERAL_LIGHT_MODIFIERS
+       LIGHT_TYPE:
+         'spotlight'  | 'shadowless'  | 'cylinder'  | 'parallel'
+       SPOTLIGHT_ITEM:
+         'radius', Radius | 'falloff', Falloff | 'tightness', Tightness |
+         'point_at', [Spot]
+       PARALLEL_ITEM:
+         'point_at', [Spot]
+       AREA_LIGHT_ITEM:
+         'area_light', [Axis_1], [Axis_2], Size_1, Size_2 |
+         'adaptive', Adaptive | 'area_illumination' ,  *[Bool] |
+         'jitter'  | 'circular'  | 'orient'
+       GENERAL_LIGHT_MODIFIERS:
+         LooksLike( OBJECT ) |
+         'TRANSFORMATION', 'fade_distance'  Fade_Distance |
+         'fade_power', Fade_Power | 'media_attenuation' ,  *[Bool] |
+         'media_interaction' ,  *[Bool] | 'projected_through' """
+
+
+class LooksLike(POVRayElement):
+    """LooksLike(Object())
+    """
+
+
+class ProjectedThrough(POVRayElement):
+    """ProjectedThrough(Object())
+    """
+
+
+class LightGroup(POVRayElement):
+    """"LightGroup(
+         LIGHT_GROUP LIGHT  |
+         LIGHT_GROUP OBJECT |
+         LIGHT_GROUP
+         *[LIGHT_GROUP MODIFIER]
+         )
+       LIGHT_GROUP LIGHT:
+         light_source | light_source IDENTIFIER
+       LIGHT_GROUP OBJECT:
+         OBJECT | OBJECT IDENTIFIER
+       LIGHT_GROUP MODIFIER:
+         global_lights BOOL | TRANSFORMATION"
+    """
 
 
 class Radiosity(POVRayElement):
-    """ Radiosity(...)
-    (put in global settings)"""
+    """Radiosity(*[Radiosity Items])
+    """
 
-class SlopeMap(POVRayMap):
-    """ SlopeMap( [0, slope1], [.5, slope2], [0.8, slope3], [1, slope4]) """
 
-class SkySphere(POVRayElement):
-    """ SkySphere( Pigment(color_rgb) ) """
+class Photons(POVRayElement):
+    """"Photons(
+         spacing <photon_spacing> | count <photons_to_shoot>
+         *[gather <min_gather>, <max_gather>]
+         *[media <max_steps> *[,<factor>]]
+         *[jitter <jitter_amount>]
+         *[max_trace_level <photon_trace_level>]
+         *[adc_bailout <photon_adc_bailout>]
+         *[save_file \"filename\" | load_file \"filename\"]
+         *[autostop <autostop_fraction>]
+         *[expand_thresholds <percent_increase>, <expand_min>]
+         *[radius <gather_radius>, <multiplier>, <media>,<multiplier>]
+         )"
+    """
 
-class Sphere(POVRayElement):
-    """ Sphere(location_xyz, radius, *a) """
 
-class Text(POVRayElement):
-    """  Text('ttf', 'Hello', 'crystall.ttf', 1,0) """
+class Object(POVRayElement):
+    """Object()
+    """
 
-class Texture(POVRayElement):
-    """ Texture ( Pigment(color_rgb), 'phong', 0.1, 'reflection', 0.5) """
-
-class TextureMap(POVRayMap):
-    """ TextureMap( [0, texture1], [.5, texture2], [0.8, texture3], [1, texture4]) """
-
-class Triangle(POVRayElement):
-    """ Triangle() """
-
-class Union(POVRayElement):
-    """ Union(obj1, obj2, obj3, *a) """
 
 class Blob(POVRayElement):
-    """ Blob(blob_item1, blob_item2, ...) """
+    """Blob( BLOB_ITEM... *[BLOB_MODIFIERS...])
+       BLOB_ITEM:
+         Sphere([Center], Radius,
+           *[ 'strength', ] Strength  *[COMPONENT_MODIFIER...] ) |
+         Cylinder([End1], [End2], Radius,
+           *[ 'strength', ] Strength,  *[COMPONENT_MODIFIER...] ) |
+         'component', Strength, Radius, [Center] |
+         'threshold', Amount
+       COMPONENT_MODIFIER:
+         TEXTURE | PIGMENT | NORMAL | FINISH | TRANSFORMATION
+       BLOB_MODIFIER:
+         'hierarchy' ,  *[Boolean] | 'sturm' ,  *[Boolean] | OBJECT_MODIFIER"""
+
+
+class Parametric(POVRayElement):
+    """"Parametric(
+         Function( FUNCTION_ITEMS ),
+         Function( FUNCTION_ITEMS ),
+         Function( FUNCTION_ITEMS )
+
+         [u1,v1], [u2,v2]
+         *[ContainedBy( SPHERE | BOX )]
+         *[max_gradient FLOAT_VALUE]
+         *[accuracy FLOAT_VALUE]
+         *[precompute DEPTH, VarList]
+         )"
+    """
+
 
 class Prism(POVRayElement):
-    """ Prism('linear_spline', 'linear_sweep', Height_1, Height_2, Number_Of_Points, ...) """
+    """Prism(
+           *[PRISM_ITEMS...] Height_1, Height_2, Number_Of_Points,
+           [Point_1], [Point_2], ... [Point_n]
+           *[ 'open', ],  *[PRISM_MODIFIERS...]
+           )
+       PRISM_ITEM:
+         'linear_spline'  | 'quadratic_spline'  | 'cubic_spline'  |
+         'bezier_spline'  | 'linear_sweep'  | 'conic_sweep'
+       PRISM_MODIFIER:
+         'sturm'  | OBJECT_MODIFIER"""
 
-class VertexVectors(POVRayElement):
-    """ VertexVectors(len(VertexList), *VertexList)"""
 
-class NormalVectors(POVRayElement):
-    """ NormalVectors()"""
+class Sphere(POVRayElement):
+    """Sphere(
+           [Center], Radius
+           *[OBJECT_MODIFIERS...]
+           )"""
 
-class FaceIndices(POVRayElement):
-    """ FaceIndices(len(FaceList), *FaceList)"""
+
+class SphereSweep(POVRayElement):
+    """SphereSweep(
+           'linear_spline'  | 'b_spline'  | 'cubic_spline'
+           NUM_OF_SPHERES,
+           CENTER, RADIUS,
+           CENTER, RADIUS,
+           ...
+           CENTER, RADIUS
+           *['tolerance', DEPTH_TOLERANCE]
+           *[OBJECT_MODIFIERS]
+           )"""
+
+
+class Superellipsoid(POVRayElement):
+    """Superellipsoid(
+           [Value_E, Value_N]
+           *[OBJECT_MODIFIERS...]
+           )"""
+
+
+class Sor(POVRayElement):
+    """Sor(
+           Number_Of_Points, [Point_1], [Point_2], ... [Point_n]
+           *[ 'open', ],  *[SOR_MODIFIERS...]
+           )
+       SOR_MODIFIER:
+         'sturm'  | OBJECT_MODIFIER"""
+
+
+class Text(POVRayElement):
+    """Text(
+           'ttf'  'fontname.ttf/ttc' 'String_of_Text'
+           Thickness, [Offset]
+           *[OBJECT_MODIFIERS...]
+           )"""
+
+
+class Torus(POVRayElement):
+    """Torus(
+           Major, Minor
+           *[TORUS_MODIFIER...]
+           )
+       TORUS_MODIFIER:
+         'sturm'  | OBJECT_MODIFIER"""
+
+
+class Box(POVRayElement):
+    """Box(
+           [Corner_1], [Corner_2]
+           *[OBJECT_MODIFIERS...]
+           )"""
+
+
+class Cone(POVRayElement):
+    """Cone(
+           [Base_Point], Base_Radius, [Cap_Point], Cap_Radius
+           *[ 'open', ]*[OBJECT_MODIFIERS...]
+           )"""
+
+
+class Cylinder(POVRayElement):
+    """Cylinder(
+           [Base_Point], [Cap_Point], Radius
+           *[ 'open', ]*[OBJECT_MODIFIERS...]
+           )"""
+
+
+class HeightField(POVRayElement):
+    """HeightField(
+           *[HF_TYPE] 'filename' *['gamma', GAMMA],  *['premultiplied', BOOL] | *[HF_FUNCTION]
+           *[HF_MODIFIER...]
+           *[OBJECT_MODIFIER...]
+           )
+       HF_TYPE:
+         'exr'  | 'gif'  | 'hdr'  | 'iff'  | 'jpeg'  | 'pgm'  | 'png'  | 'pot'  | 'ppm'  | 'sys'  | 'tga'  | 'tiff'
+       HF_FUNCTION:
+         'function', FieldResolution_X, FieldResolutionY( UserDefined_Function )
+       HF_MODIFIER:
+         'smooth'  & 'water_level', Level
+       OBJECT_MODIFIER:
+         'hierarchy' ,  *[Boolean]"""
+
+
+
+class Isosurface(POVRayElement):
+    """Isosurface(
+         Function( FUNCTION_ITEMS )
+         *[ContainedBy( SPHERE | BOX )]
+         *['threshold', FLOAT_VALUE]
+         *['accuracy', FLOAT_VALUE]
+         *['max_gradient', FLOAT_VALUE]
+         *['evaluate', P0, P1, P2]
+         *[open]
+         *['max_trace', INTEGER] | *[all_intersections]
+         *[OBJECT_MODIFIERS...]
+         )"""
+
+
+
+class ContainedBy(POVRayElement):
+    """"ContainedBy( Object() )"
+    """
+
+
+
+class JuliaFractal(POVRayElement):
+    """JuliaFractal(
+           [4D_Julia_Parameter]
+           *[JF_ITEM...],  *[OBJECT_MODIFIER...]
+           )
+       JF_ITEM:
+         ALGEBRA_TYPE | FUNCTION_TYPE | 'max_iteration', Count |
+         'precision', Amt | 'slice', [4D_Normal], Distance
+       ALGEBRA_TYPE:
+         'quaternion'  | 'hypercomplex'
+       FUNCTION_TYPE:
+         QUATERNATION:
+           'sqr'  | 'cube'
+         HYPERCOMPLEX:
+           'sqr'  | 'cube'  | 'exp'  | 'reciprocal'  | 'sin'  | 'asin'  | 'sinh'  |
+           'asinh'  | 'cos'  | 'acos'  | 'cosh'  | 'acosh'  | 'tan'  | 'atan'  |tanh |
+           'atanh'  | 'ln'  | Pwr( X_Val, Y_Val )"""
+
+
+class Lathe(POVRayElement):
+    """Lathe(
+           *[SPLINE_TYPE] Number_Of_Points, [Point_1]
+           [Point_2]... [Point_n]
+           *[LATHE_MODIFIER...]
+           )
+       SPLINE_TYPE:
+         'linear_spline'  | 'quadratic_spline'  | 'cubic_spline'  | 'bezier_spline'
+       LATHE_MODIFIER:
+         'sturm'  | OBJECT_MODIFIER"""
+
+
+class Ovus(POVRayElement):
+    """Ovus(
+           Bottom_radius, Top_radius
+           *[OBJECT_MODIFIERS...]
+           )"""
+
+
+class BicubicPatch(POVRayElement):
+    """BicubicPatch(
+           PATCH_ITEMS...
+           [Point_1],[Point_2],[Point_3],[Point_4],
+           [Point_5],[Point_6],[Point_7],[Point_8],
+           [Point_9],[Point_10],[Point_11],[Point_12],
+           [Point_13],[Point_14],[Point_15],[Point_16]
+           *[OBJECT_MODIFIERS...]
+           )
+       PATCH_ITEMS:
+         'type', Patch_Type | 'u_steps', Num_U_Steps | 'v_steps', Num_V_Steps |
+         'flatness', Flatness"""
+
+
+class Disc(POVRayElement):
+    """Disc(
+           [Center], [Normal], Radius,  *[, Hole_Radius]
+           *[OBJECT_MODIFIERS...]
+           )"""
+
+
+class Mesh(POVRayElement):
+    """Mesh(
+           MESH_TRIANGLE...
+           *[MESH_MODIFIER...]
+           )
+       MESH_TRIANGLE:
+         Triangle(
+           [Corner_1], [Corner_2], [Corner_3]
+           *['uv_vectors', [uv_Corner_1], [uv_Corner_2], [uv_Corner_3]]
+           *[MESH_TEXTURE]
+           ) |
+         SmoothTriangle(
+           [Corner_1], [Normal_1],
+           [Corner_2], [Normal_2],
+           [Corner_3], [Normal_3]
+           *['uv_vectors', [uv_Corner_1], [uv_Corner_2], [uv_Corner_3]]
+           *[MESH_TEXTURE]
+           )
+       MESH_TEXTURE:
+         Texture( TEXTURE_IDENTIFIER )
+         TextureList(
+           'TEXTURE_IDENTIFIER', TEXTURE_IDENTIFIER TEXTURE_IDENTIFIER
+           )
+       MESH_MODIFIER:
+         'inside_vector', [direction] | 'hierarchy' ,  *[ 'Boolean', ] |
+         OBJECT_MODIFIER"""
+
+
 
 class Mesh2(POVRayElement):
-    """ Mesh2()"""
+    """"MESH2 :
+         Mesh2(
+           VECTORS...
+           LISTS...   |
+           INDICES... |
+           MESH_MODIFIERS
+           )
+       VECTORS :
+         VertexVectors(
+         number_of_vertices,
+         [vertex1], [vertex2], ...
+         )|
+         NormalVectors(
+           number_of_normals,
+           [normal1], [normal2], ...
+           )|
+         UvVectors(
+           number_of_uv_vectors,
+           [uv_vect1], [uv_vect2], ...
+           )
+       LISTS :
+         TextureList(
+           number_of_textures,
+           Texture( Texture1 ),
+           Texture( Texture2 ), ...
+           )|
+       INDICES :
+         FaceIndices(
+           number_of_faces,
+             [index_a, index_b, index_c] *[,texture_index *[,
+           texture_index, texture_index]],
+             [index_d, index_e, index_f] *[,texture_index *[,
+             texture_index, texture_index]],
+             ...
+             )|
+         NormalIndices(
+           number_of_faces,
+             [index_a, index_b, index_c],
+             [index_d, index_e, index_f],
+             ...
+             )|
+         UvIndices(
+           number_of_faces,
+             [index_a, index_b, index_c],
+             [index_d, index_e, index_f],
+             ...
+             )
+       MESH_MODIFIER :
+         inside_vector [direction] | OBJECT_MODIFIERS"
+    """
 
-class Media(POVRayElement):
-    """ Media()"""
+class FaceIndices(POVRayElement):
+    """FaceIndices(
+         number_of_faces,
+         [index_a, index_b, index_c],
+         [index_d, index_e, index_f],
+         ...
+         )
+    """
 
-class TextureList(POVRayElement):
-    """ TextureList() """
+
+class NormalIndices(POVRayElement):
+    """
+    """
+
+
+class NormalVectors(POVRayElement):
+    """
+    """
+
+
+class UvIndices(POVRayElement):
+    """
+    """
+
+
+class VertexVectors(POVRayElement):
+    """
+    """
+
+
+class Polygon(POVRayElement):
+    """Polygon(
+           Number_Of_Points, [Point_1] [Point_2]... [Point_n]
+           *[OBJECT_MODIFIER...]
+           )"""
+
+
+class Triangle(POVRayElement):
+    """Triangle(
+         [Corner_1],
+         [Corner_2],
+         [Corner_3]
+         *[MESH_TEXTURE]
+         )   |
+       SmoothTriangle(
+         [Corner_1], [Normal_1],
+         [Corner_2], [Normal_2],
+         [Corner_3], [Normal_3]
+         *[MESH_TEXTURE]
+         )
+       MESH_TEXTURE:
+         Texture( TEXTURE_IDENTIFIER ) |
+         TextureList(
+           'TEXTURE_IDENTIFIER', TEXTURE_IDENTIFIER TEXTURE_IDENTIFIER
+           )"""
+
+
+class SmoothTriangle(POVRayElement):
+    """SmoothTriangle(
+         [Corner_1], [Normal_1], [Corner_2],
+         [Normal_2], [Corner_3], [Normal_3]
+         *[OBJECT_MODIFIER...]
+         )"""
+
+
+class Plane(POVRayElement):
+    """Plane(
+           [Normal], Distance
+           *[OBJECT_MODIFIERS...]
+           )"""
+
+
+class Poly(POVRayElement):
+    """Poly(
+           Order, [A1, A2, A3,... An]
+           *[POLY_MODIFIERS...]
+           )
+       POLY_MODIFIERS:
+         'sturm'  | OBJECT_MODIFIER"""
+
+
+class Cubic(POVRayElement):
+    """Cubic(
+           [A1, A2, A3,... A20]
+           *[POLY_MODIFIERS...]
+           )"""
+
+
+class Quartic(POVRayElement):
+    """Quartic(
+           [A1, A2, A3,... A35]
+           *[POLY_MODIFIERS...]
+           )"""
+
+
+class Polynomial(POVRayElement):
+    """Polynomial(
+           Order, *[COEFFICIENTS...]
+           *[POLY_MODIFIERS...]
+           )
+       COEFFICIENTS:
+         Xyz([x_power],[y_power],[z_power]):[value]*[,]
+       POLY_MODIFIERS:
+         'sturm'  | OBJECT_MODIFIER"""
+
+
+class Quadric(POVRayElement):
+    """Quadric(
+           [A,B,C],[D,E,F],[G,H,I],J
+           *[OBJECT_MODIFIERS...]
+           )"""
+
+
+class Union(POVRayElement):
+    """Union(
+           OBJECTS...
+           *[OBJECT_MODIFIERS...]
+           )"""
+
+
+class Intersection(POVRayElement):
+    """Intersection(
+           SOLID_OBJECTS...
+           *[OBJECT_MODIFIERS...]
+           )"""
+
+
+class Difference(POVRayElement):
+    """Difference(
+           SOLID_OBJECTS...
+           *[OBJECT_MODIFIERS...]
+           )"""
+
+
+class Merge(POVRayElement):
+    """Merge(
+           SOLID_OBJECTS...
+           *[OBJECT_MODIFIERS...]
+           )"""
+
 
 class ClippedBy(POVRayElement):
-    """ ClippedBy() """
+    """ClippedBy( UNTEXTURED_SOLID_OBJECT... ) |
+         ClippedBy( 'bounded_by'  )                 |
+         BoundedBy( UNTEXTURED_SOLID_OBJECT... ) |
+         BoundedBy( 'clipped_by'  )                 |
+         'no_shadow'                   |
+         'no_image' ,  *[ 'Bool', ]          |
+         'no_radiosity' ,  *[ 'Bool', ]      |
+         'no_reflection' ,  *[ 'Bool', ]     |
+         'inverse'                     |
+         'sturm' ,  *[ 'Bool', ]             |
+         'hierarchy' ,  *[ 'Bool', ]         |
+         'double_illuminate' ,  *[ 'Bool', ] |
+         'hollow' ,   *[ 'Bool', ]           |
+         Interior( INTERIOR_ITEMS... )                        |
+         Material( *[MATERIAL_IDENTIFIER]*[MATERIAL_ITEMS...] ) |
+         Texture( TEXTURE_BODY )   |
+         InteriorTexture( TEXTURE_BODY ) |
+         Pigment( PIGMENT_BODY )   |
+         Normal( NORMAL_BODY )     |
+         Finish( FINISH_ITEMS... ) |
+         Photons( PHOTON_ITEMS...)
+         Radiosity( RADIOSITY_ITEMS...)
+         TRANSFORMATION"""
+
+
+class BoundedBy(POVRayElement):
+    """BoundedBy( UNTEXTURED_SOLID_OBJECT... ) |
+         BoundedBy( 'clipped_by'  )"""
+
+
+class Material(POVRayElement):
+    """Material( *[MATERIAL_IDENTIFIER]*[MATERIAL_ITEMS...] )
+       MATERIAL_ITEMS:
+         TEXTURE | INTERIOR_TEXTURE | INTERIOR | TRANSFORMATIONS"""
+
+
+class Texture(POVRayElement):
+    """Texture(
+           *[PATTERNED_TEXTURE_ID]
+           *[TRANSFORMATIONS...]
+           ) |
+         Texture(
+           PATTERN_TYPE
+           *[TEXTURE_PATTERN_MODIFIERS...]
+           ) |
+         Texture(
+           'tiles', TEXTURE 'tile2', TEXTURE
+           *[TRANSFORMATIONS...]
+           ) |
+         Texture(
+           MaterialMap(
+             BITMAP_TYPE 'bitmap.ext'
+             *[BITMAP_MODS...] TEXTURE... *[TRANSFORMATIONS...]
+             )
+           )
+       TEXTURE_PATTERN_MODIFIER:
+         PATTERN_MODIFIER | TEXTURE_LIST |
+         TextureMap(
+           TEXTURE_MAP_BODY
+           )"""
+
+
+class Pigment(POVRayElement):
+    """Pigment(
+           ImageMap(
+             *[BITMAP_TYPE] 'bitmap*[.ext]' *['gamma', GAMMA],  *['premultiplied', BOOL]
+             *[IMAGE_MAP_MODS...]
+             )
+         *[PIGMENT_MODFIERS...]
+         )
+        IMAGE_MAP:
+         Pigment(
+          ImageMap(
+            FUNCTION_IMAGE
+            )
+         *[PIGMENT_MODFIERS...]
+         )
+        BITMAP_TYPE:
+          'exr'  | 'gif'  | 'hdr'  | 'iff'  | 'jpeg'  | 'pgm'  | 'png'  | 'ppm'  | 'sys'  | 'tga'  | 'tiff'
+        IMAGE_MAP_MODS:
+          'map_type', Type | 'once'  | 'interpolate', Type |
+          'filter', Palette, Amount | 'filter', 'all'  Amount |
+          'transmit', Palette, Amount | 'transmit', 'all'  Amount
+        FUNCTION_IMAGE:
+          'function', I_WIDTH, IHEIGHT( FUNCTION_IMAGE_BODY )
+        FUNCTION_IMAGE_BODY:
+          PIGMENT | FN_FLOAT | Pattern( PATTERN,  *[PATTERN_MODIFIERS] ) """
+
+
+class ColorMap(POVRayMap):
+    """ColorMap( COLOR_MAP_BODY ) | ColourMap( COLOR_MAP_BODY )
+       COLOR_MAP_BODY:
+         COLOR_MAP_IDENTIFIER | COLOR_MAP_ENTRY...
+       COLOR_MAP_ENTRY:
+         *[ 'Value', COLOR ] |
+         *[ Value_1, 'Value_2', 'color'  'COLOR_1', 'color'  'COLOR_2', ]"""
+
+
+class ColourMap(POVRayMap):
+    """
+    """
+
+
+class PigmentMap(POVRayMap):
+    """PigmentMap( PIGMENT_MAP_BODY )
+       PIGMENT_MAP_BODY:
+         PIGMENT_MAP_IDENTIFIER | PIGMENT_MAP_ENTRY...
+       PIGMENT_MAP_ENTRY:
+         *[ 'Value', PIGMENT_BODY ]"""
+
+
+class Normal(POVRayElement):
+    """Normal(
+           BumpMap(
+             BITMAP_TYPE 'bitmap.ext' *['gamma', GAMMA],  *['premultiplied', BOOL]
+             *[BUMP_MAP_MODS...]
+             )
+         *[NORMAL_MODFIERS...]
+         )
+       BITMAP_TYPE:
+         'exr'  | 'gif'  | 'hdr'  | 'iff'  | 'jpeg'  | 'pgm'  | 'png'  | 'ppm'  | 'sys'  | 'tga'  | 'tiff'
+       BUMP_MAP_MOD:
+         'map_type', Type | 'once'  | 'interpolate', Type | 'use_color'  |
+         'use_colour'  | 'bump_size', Value"""
+
+
+class NormalMap(POVRayMap):
+    """NormalMap( NORMAL_MAP_BODY )
+       NORMAL_MAP_BODY:
+         NORMAL_MAP_IDENTIFIER | NORMAL_MAP_ENTRY...
+       NORMAL_MAP_ENTRY:
+         *[ 'Value', NORMAL_BODY ]"""
+
+
+class SlopeMap(POVRayMap):
+    """SlopeMap( SLOPE_MAP_BODY )
+       SLOPE_MAP_BODY:
+         SLOPE_MAP_IDENTIFIER | SLOPE_MAP_ENTRY...
+       SLOPE_MAP_ENTRY:
+         *[ Value, [Height, Slope] ]"""
+
+
+class BumpMap(POVRayElement):
+    """BUMP_MAP:
+         Normal(
+           BumpMap(
+             BITMAP_TYPE "bitmap.ext" *[gamma GAMMA] *[premultiplied BOOL]
+             *[BUMP_MAP_MODS...]
+             )
+         *[NORMAL_MODFIERS...]
+         )
+       BITMAP_TYPE:
+         exr | gif | hdr | iff | jpeg | pgm | png | ppm | sys | tga | tiff
+       BUMP_MAP_MOD:
+         map_type Type | once | interpolate Type | use_color |
+         use_colour | bump_size Value
+    """
+
+
+class Finish(POVRayElement):
+    """Finish( *[FINISH_IDENTIFIER],  *[FINISH_ITEMS...] )
+       FINISH_ITEMS:
+         'ambient', COLOR | 'diffuse' ,  *[albedo] Amount,  *[, Amount] | 'emission', COLOR |
+         'brilliance', Amount | 'phong' ,  *[albedo] Amount | 'phong_size', Amount | 'specular' ,  *[albedo] Amount |
+         'roughness', Amount | 'metallic' ,  *[Amount] | 'reflection', COLOR |
+         'crand', Amount | 'conserve_energy', BOOL_ON_OFF |
+         Reflection( Color_Reflecting_Min,  *[REFLECTION_ITEMS...] ) |
+         Subsurface( 'translucency', COLOR ) |
+         Irid( Irid_Amount,  *[IRID_ITEMS...] )
+       REFLECTION_ITEMS:
+         COLOR_REFLECTION_MAX | 'fresnel', BOOL_ON_OFF |
+         'falloff', FLOAT_FALLOFF | 'exponent', FLOAT_EXPONENT |
+         'metallic', FLOAT_METALLIC
+       IRID_ITEMS:
+         'thickness', Amount | 'turbulence', Amount"""
+
+
+class Subsurface(POVRayElement):
+    """ Subsurface( translucency COLOR ) |
+        Subsurface( samples INT, INT )|
+        Subsurface( radiosity BOOL )"
+    """
+
+
+class Reflection(POVRayElement):
+    """Reflection(
+           *[COLOR_REFLECTION_MIN,] COLOR_REFLECTION_MAX
+           *[fresnel BOOL_ON_OFF]
+           *[falloff FLOAT_FALLOFF]
+           *[exponent FLOAT_EXPONENT]
+           *[metallic FLOAT_METALLIC]
+           )
+    """
+
+
+class Irid(POVRayElement):
+    """Irid( Irid_Amount,  *[IRID_ITEMS...] )
+       IRID_ITEMS:
+         'thickness', Amount | 'turbulence', Amount"""
+
+
+class TextureList(POVRayElement):
+    """Texture(
+           *[PATTERNED_TEXTURE_ID]
+           *[TRANSFORMATIONS...]
+           ) |
+         Texture(
+           PATTERN_TYPE
+           *[TEXTURE_PATTERN_MODIFIERS...]
+           ) |
+         Texture(
+           tiles TEXTURE tile2 TEXTURE
+           *[TRANSFORMATIONS...]
+           ) |
+         Texture(
+           MaterialMap(
+             BITMAP_TYPE "bitmap.ext"
+             *[BITMAP_MODS...] TEXTURE... *[TRANSFORMATIONS...]
+             )
+           )
+       TEXTURE_PATTERN_MODIFIER:
+         PATTERN_MODIFIER | TEXTURE_LIST |
+         TextureMap(
+           TEXTURE_MAP_BODY
+           )
+    """
+
+
+class TextureMap(POVRayMap):
+    """TextureMap( TEXTURE_MAP_BODY )
+       TEXTURE_MAP_BODY:
+         TEXTURE_MAP_IDENTIFIER | TEXTURE_MAP_ENTRY...
+       TEXTURE_MAP_ENTRY:
+         *[ 'Value', TEXTURE_BODY ]"""
+
+
+class MaterialMap(POVRayElement):
+    """"MATERIAL_MAP:
+         Texture(
+           MaterialMap(
+             BITMAP_TYPE \"bitmap.ext\"
+             *[BITMAP_MODS...] TEXTURE... *[TRANSFORMATIONS...]
+             )
+           )
+       BITMAP_TYPE:
+         exr | gif | hdr | iff | jpeg | pgm | png | ppm | sys | tga | tiff
+       BITMAP_MOD:
+         map_type Type | once | interpolate Type"
+    """
+
+
+
+class InteriorTexture(POVRayElement):
+    """InteriorTexture([TextureItems...]):
+    """
+
+
+
+class PigmentPattern(POVRayElement):
+    """PigmentPattern(PIGMENT_BODY)
+    """
+
+
+class Slope(POVRayElement):
+    """Pigment(
+         Slope(
+           [Direction] *[, Lo_slope, Hi_slope ]
+           *[ altitude [Altitude] *[, Lo_alt, Hi_alt ]]
+           )
+         *[PIGMENT_MODIFIERS...]
+         )
+    """
+
+
+class ImagePattern(POVRayElement):
+    """IMAGE_PATTERN:
+         ImagePattern(
+           BITMAP_TYPE "bitmap.ext" *[gamma GAMMA] *[premultiplied BOOL]
+           *[IMAGE_MAP_MODS...]
+           )
+       IMAGE_MAP_MOD:
+         map_type Type | once | interpolate Type | use_alpha
+         ITEM_MAP_BODY:
+         ITEM_MAP_IDENTIFIER | ITEM_MAP_ENTRY...
+         ITEM_MAP_ENTRY:
+         *[ GRAY_VALUE  ITEM_MAP_ENTRY... ]
+    """
+
+
+class Warp(POVRayElement):
+    """Warp( WARP_ITEM )
+       WARP_ITEM:
+         'repeat', [Direction],  *[REPEAT_ITEMS...] |
+         'black_hole', [Location], Radius,  *[BLACK_HOLE_ITEMS...] |
+         'turbulence', [Amount],  *[TURB_ITEMS...]
+         'cylindrical' ,   *[ 'orientation', VECTOR | 'dist_exp', FLOAT ]
+         'spherical' ,   *[ 'orientation', VECTOR | 'dist_exp', FLOAT ]
+         'toroidal' ,   *[ 'orientation', VECTOR | 'dist_exp', FLOAT | 'major_radius', FLOAT ]
+         'planar' ,  *[ VECTOR , 'FLOAT', ]
+       REPEAT_ITEMS:
+         'offset', [Amount] |
+         'flip', [Axis]
+       BLACK_HOLE_ITEMS:
+         'strength', Strength | 'falloff', Amount | 'inverse'  |
+         'repeat', [Repeat] | 'turbulence', [Amount]
+       TURB_ITEMS:
+         'octaves', Count | 'omega', Amount | 'lambda', Amount"""
+
+
+
+class ImageMap(POVRayElement):
+    """IMAGE_MAP:
+         Pigment(
+           ImageMap(
+             *[BITMAP_TYPE] "bitmap*[.ext]" *[gamma GAMMA] *[premultiplied BOOL]
+             *[IMAGE_MAP_MODS...]
+             )
+         *[PIGMENT_MODFIERS...]
+         )
+        IMAGE_MAP:
+         Pigment(
+          ImageMap(
+            FUNCTION_IMAGE
+            )
+         *[PIGMENT_MODFIERS...]
+         )
+        BITMAP_TYPE:
+          exr | gif | hdr | iff | jpeg | pgm | png | ppm | sys | tga | tiff
+        IMAGE_MAP_MODS:
+          map_type Type | once | interpolate Type |
+          filter Palette, Amount | filter all Amount |
+          transmit Palette, Amount | transmit all Amount
+        FUNCTION_IMAGE:
+          function I_WIDTH, IHEIGHT( FUNCTION_IMAGE_BODY )
+        FUNCTION_IMAGE_BODY:
+          PIGMENT | FN_FLOAT | Pattern( PATTERN *[PATTERN_MODIFIERS] )
+    """
+
+
+class Media(POVRayElement):
+    """Media( *[MEDIA_IDENTIFIER],  *[MEDIA_ITEMS...] )
+       MEDIA_ITEMS:
+         'method', Number | 'intervals', Number | 'samples', Min, Max |
+         'confidence', Value  | 'variance', Value | 'ratio', Value | 'jitter', Value
+         'absorption', COLOR | 'emission', COLOR | 'aa_threshold', Value |
+         'aa_level', Value |
+         Scattering(
+           Type, COLOR,  *[ 'eccentricity', Value ],  *[ 'extinction', Value ]
+           )  |
+         Density(
+           *[DENSITY_IDENTIFIER],  *[PATTERN_TYPE],  *[DENSITY_MODIFIER...]
+           )   |
+         TRANSFORMATIONS
+       DENSITY_MODIFIER:
+         PATTERN_MODIFIER | DENSITY_LIST | COLOR_LIST |
+         ColorMap( COLOR_MAP_BODY ) | ColourMap( COLOR_MAP_BODY ) |
+         DensityMap( DENSITY_MAP_BODY )"""
+
+
+class Interior(POVRayElement):
+    """Interior( *[INTERIOR_IDENTIFIER],  *[INTERIOR_ITEMS...] )
+       INTERIOR_ITEM:
+         'ior', Value | 'caustics', Value | 'dispersion', Value |
+         'dispersion_samples', Samples | 'fade_distance', Distance |
+         'fade_power', Power | 'fade_color', [Color]
+         MEDIA..."""
+
+
+class Scattering(POVRayElement):
+    """Scattering(
+           Type, COLOR,  *[ 'eccentricity', Value ],  *[ 'extinction', Value ]
+           )"""
+
+
+class Density(POVRayElement):
+    """Density(
+           *[DENSITY_IDENTIFIER]
+           *[DENSITY_TYPE]
+           *[DENSITY_MODIFIER...]
+           )
+       DENSITY_TYPE:
+         PATTERN_TYPE | COLOR
+         DENSITY_MODIFIER:
+         PATTERN_MODIFIER | DENSITY_LIST | ColorMap( COLOR_MAP_BODY ) |
+         ColourMap( COLOR_MAP_BODY ) | DensityMap( DENSITY_MAP_BODY )"""
+
+
+class DensityMap(POVRayMap):
+    """DensityMap( DENSITY_MAP_BODY )
+       DENSITY_MAP_BODY:
+         DENSITY_MAP_IDENTIFIER | DENSITY_MAP_ENTRY...
+       DENSITY_MAP_ENTRY:
+         *[ 'Value', DENSITY_BODY ]"""
