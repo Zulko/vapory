@@ -35,11 +35,11 @@ class Scene:
         declares = ['#declare %s;'%e for e in self.declares]
 
         global_settings = ["global_settings{\n%s\n}"%("\n".join(
-                           [str(e) for e in self.global_settings]))]
+                [str(e) for e in self.global_settings]))]
         return '\n'.join([str(e)
-                          for l in  [included, declares, self.objects, [self.camera],
-                              self.atmospheric, global_settings]
-                          for e in l])
+                for l in  [included, declares, self.objects, [self.camera],
+                 self.atmospheric, global_settings]
+            for e in l])
 
     def copy(self):
         return deepcopy(self)
@@ -87,11 +87,11 @@ class Scene:
         """
 
         if auto_camera_angle and width is not None:
-            self.camera = self.camera.add_args(['right', [1.0*width/height, 0,0]])
+            self.camera=self.camera.add_args(['right',[1.0*width/height, 0,0]])
 
         return render_povstring(str(self), outfile, height, width,
-                                quality, antialiasing, remove_temp, show_window,
-                                tempfile, includedirs, output_alpha)
+                               quality, antialiasing, remove_temp, show_window,
+                               tempfile, includedirs, output_alpha)
 
 
 class POVRayElement:
@@ -107,8 +107,8 @@ class POVRayElement:
         return re.sub(r'(?!^)([A-Z])', r'_\1', cls.__name__)
 
     @classmethod
-    def help(self):
-        webbrowser.open(WIKIREF + self.transformed_name())
+    def help(cls):
+        webbrowser.open(WIKIREF + cls.transformed_name())
 
     def add_args(self, new_args):
         new = self.copy()
@@ -168,8 +168,9 @@ class Camera(POVRayElement):
          CAMERA_TYPE | CAMERA_VECTOR | CAMERA_MODIFIER |
          CAMERA_IDENTIFIER
        CAMERA_TYPE:
-         'perspective'  | 'orthographic'  | MeshCamera(MESHCAM_MODIFIERS) | 'fisheye'  | 'ultra_wide_angle'  |
-         'omnimax'  | 'panoramic'  | 'cylinder', CylinderType | 'spherical'
+         'perspective'  | 'orthographic'  | MeshCamera(MESHCAM_MODIFIERS) |
+         'fisheye'  | 'ultra_wide_angle'  | 'omnimax'  | 'panoramic'  | 
+         'cylinder', CylinderType | 'spherical'
        CAMERA_VECTOR:
          'location', [Location] | 'right', [Right] | 'up', [Up] |
          'direction', [Direction] | 'sky', [Sky]
@@ -180,11 +181,13 @@ class Camera(POVRayElement):
          'variance', Blur_Variance | *[Bokeh(Pigment(BOKEH))] |
          NORMAL | TRANSFORMATION | *[MESHCAM_SMOOTH]
        MESHCAM_MODIFIERS:
-         'rays', 'per'  'pixel'  & 'distribution', 'type'  & *['max', 'distance' ] & MESH_OBJECT & *[MESH_OBJECT...]
+         'rays', 'per'  'pixel'  & 'distribution', 'type'  & 
+         *['max', 'distance' ] & MESH_OBJECT & *[MESH_OBJECT...]
        BOKEH:
          'a', COLOR_VECTOR 'in', 'the'  'range', 'of'  [0,0,0] ... [1,1,0]
        MESHCAM_SMOOTH:
-         'optional', 'smooth'  'modifier', 'valid'  'only', 'when'  'using', 'mesh_camera' """
+         'optional', 'smooth'  'modifier', 'valid'  'only', 
+         'when'  'using', 'mesh_camera' """
 
 
 class Bokeh(POVRayElement):
@@ -417,14 +420,16 @@ class Cylinder(POVRayElement):
 
 class HeightField(POVRayElement):
     """HeightField(
-           *[HF_TYPE] 'filename' *['gamma', GAMMA],  *['premultiplied', BOOL] | *[HF_FUNCTION]
+           *[HF_TYPE] 'filename' *['gamma', GAMMA],  *['premultiplied', BOOL] |
+           *[HF_FUNCTION]
            *[HF_MODIFIER...]
            *[OBJECT_MODIFIER...]
            )
        HF_TYPE:
-         'exr'  | 'gif'  | 'hdr'  | 'iff'  | 'jpeg'  | 'pgm'  | 'png'  | 'pot'  | 'ppm'  | 'sys'  | 'tga'  | 'tiff'
+         'exr'  | 'gif'  | 'hdr'  | 'iff'  | 'jpeg'  | 'pgm'  | 'png'  | 
+         'pot'  | 'ppm'  | 'sys'  | 'tga'  | 'tiff'
        HF_FUNCTION:
-         'function', FieldResolution_X, FieldResolutionY( UserDefined_Function )
+         'function', FieldResolution_X, FieldResolutionY(UserDefined_Function)
        HF_MODIFIER:
          'smooth'  & 'water_level', Level
        OBJECT_MODIFIER:
@@ -467,9 +472,10 @@ class JuliaFractal(POVRayElement):
          QUATERNATION:
            'sqr'  | 'cube'
          HYPERCOMPLEX:
-           'sqr'  | 'cube'  | 'exp'  | 'reciprocal'  | 'sin'  | 'asin'  | 'sinh'  |
-           'asinh'  | 'cos'  | 'acos'  | 'cosh'  | 'acosh'  | 'tan'  | 'atan'  |tanh |
-           'atanh'  | 'ln'  | Pwr( X_Val, Y_Val )"""
+           'sqr'  | 'cube'  | 'exp'  | 'reciprocal'  | 'sin'  | 'asin'  |
+           'sinh'  |           'asinh'  | 'cos'  | 'acos'  | 'cosh'  | 
+           'acosh'  | 'tan'  | 'atan'  |tanh | 'atanh'  | 'ln'  | 
+           Pwr( X_Val, Y_Val )"""
 
 
 class Lathe(POVRayElement):
@@ -479,7 +485,8 @@ class Lathe(POVRayElement):
            *[LATHE_MODIFIER...]
            )
        SPLINE_TYPE:
-         'linear_spline'  | 'quadratic_spline'  | 'cubic_spline'  | 'bezier_spline'
+         'linear_spline'  | 'quadratic_spline'  |
+         'cubic_spline'  | 'bezier_spline'
        LATHE_MODIFIER:
          'sturm'  | OBJECT_MODIFIER"""
 
@@ -800,7 +807,8 @@ class Texture(POVRayElement):
 class Pigment(POVRayElement):
     """Pigment(
            ImageMap(
-             *[BITMAP_TYPE] 'bitmap*[.ext]' *['gamma', GAMMA],  *['premultiplied', BOOL]
+             *[BITMAP_TYPE] 'bitmap*[.ext]' *['gamma', GAMMA],  
+             *['premultiplied', BOOL]
              *[IMAGE_MAP_MODS...]
              )
          *[PIGMENT_MODFIERS...]
@@ -813,7 +821,8 @@ class Pigment(POVRayElement):
          *[PIGMENT_MODFIERS...]
          )
         BITMAP_TYPE:
-          'exr'  | 'gif'  | 'hdr'  | 'iff'  | 'jpeg'  | 'pgm'  | 'png'  | 'ppm'  | 'sys'  | 'tga'  | 'tiff'
+          'exr'  | 'gif'  | 'hdr'  | 'iff'  | 'jpeg'  | 'pgm'  | 'png'  | 'ppm'
+          'sys'  | 'tga'  | 'tiff'
         IMAGE_MAP_MODS:
           'map_type', Type | 'once'  | 'interpolate', Type |
           'filter', Palette, Amount | 'filter', 'all'  Amount |
@@ -849,13 +858,14 @@ class PigmentMap(POVRayMap):
 class Normal(POVRayElement):
     """Normal(
            BumpMap(
-             BITMAP_TYPE 'bitmap.ext' *['gamma', GAMMA],  *['premultiplied', BOOL]
-             *[BUMP_MAP_MODS...]
+             BITMAP_TYPE 'bitmap.ext' *['gamma', GAMMA],  
+             *['premultiplied', BOOL], *[BUMP_MAP_MODS...]
              )
          *[NORMAL_MODFIERS...]
          )
        BITMAP_TYPE:
-         'exr'  | 'gif'  | 'hdr'  | 'iff'  | 'jpeg'  | 'pgm'  | 'png'  | 'ppm'  | 'sys'  | 'tga'  | 'tiff'
+         'exr'  | 'gif'  | 'hdr'  | 'iff'  | 'jpeg'  | 'pgm'  | 'png'  | 'ppm'
+         'sys'  | 'tga'  | 'tiff'
        BUMP_MAP_MOD:
          'map_type', Type | 'once'  | 'interpolate', Type | 'use_color'  |
          'use_colour'  | 'bump_size', Value"""
@@ -897,8 +907,9 @@ class BumpMap(POVRayElement):
 class Finish(POVRayElement):
     """Finish( *[FINISH_IDENTIFIER],  *[FINISH_ITEMS...] )
        FINISH_ITEMS:
-         'ambient', COLOR | 'diffuse' ,  *[albedo] Amount,  *[, Amount] | 'emission', COLOR |
-         'brilliance', Amount | 'phong' ,  *[albedo] Amount | 'phong_size', Amount | 'specular' ,  *[albedo] Amount |
+         'ambient', COLOR | 'diffuse' ,  *[albedo] Amount,  *[, Amount] |
+         'emission', COLOR | 'brilliance', Amount | 'phong' ,  *[albedo] Amount
+         'phong_size', Amount | 'specular' ,  *[albedo] Amount |
          'roughness', Amount | 'metallic' ,  *[Amount] | 'reflection', COLOR |
          'crand', Amount | 'conserve_energy', BOOL_ON_OFF |
          Reflection( Color_Reflecting_Min,  *[REFLECTION_ITEMS...] ) |
@@ -1032,8 +1043,8 @@ class Warp(POVRayElement):
          'turbulence', [Amount],  *[TURB_ITEMS...]
          'cylindrical' ,   *[ 'orientation', VECTOR | 'dist_exp', FLOAT ]
          'spherical' ,   *[ 'orientation', VECTOR | 'dist_exp', FLOAT ]
-         'toroidal' ,   *[ 'orientation', VECTOR | 'dist_exp', FLOAT | 'major_radius', FLOAT ]
-         'planar' ,  *[ VECTOR , 'FLOAT', ]
+         'toroidal' ,   *[ 'orientation', VECTOR | 'dist_exp', FLOAT |
+         'major_radius', FLOAT ] | 'planar' ,  *[ VECTOR , 'FLOAT', ]
        REPEAT_ITEMS:
          'offset', [Amount] |
          'flip', [Axis]
@@ -1049,8 +1060,8 @@ class ImageMap(POVRayElement):
     """IMAGE_MAP:
          Pigment(
            ImageMap(
-             *[BITMAP_TYPE] "bitmap*[.ext]" *[gamma GAMMA] *[premultiplied BOOL]
-             *[IMAGE_MAP_MODS...]
+            *[BITMAP_TYPE] "bitmap*[.ext]" *[gamma GAMMA] *[premultiplied BOOL]
+            *[IMAGE_MAP_MODS...]
              )
          *[PIGMENT_MODFIERS...]
          )
@@ -1078,9 +1089,9 @@ class Media(POVRayElement):
     """Media( *[MEDIA_IDENTIFIER],  *[MEDIA_ITEMS...] )
        MEDIA_ITEMS:
          'method', Number | 'intervals', Number | 'samples', Min, Max |
-         'confidence', Value  | 'variance', Value | 'ratio', Value | 'jitter', Value
-         'absorption', COLOR | 'emission', COLOR | 'aa_threshold', Value |
-         'aa_level', Value |
+         'confidence', Value  | 'variance', Value | 'ratio', Value | 
+         'jitter', Value | 'absorption', COLOR | 'emission', COLOR |
+         'aa_threshold', Value | 'aa_level', Value |
          Scattering(
            Type, COLOR,  *[ 'eccentricity', Value ],  *[ 'extinction', Value ]
            )  |
