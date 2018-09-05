@@ -35,11 +35,11 @@ class Scene:
         declares = ['#declare %s;'%e for e in self.declares]
 
         global_settings = ["global_settings{\n%s\n}"%("\n".join(
-                [str(e) for e in self.global_settings]))]
+                           [str(e) for e in self.global_settings]))]
         return '\n'.join([str(e)
-                for l in  [included, declares, self.objects, [self.camera],
-                 self.atmospheric, global_settings]
-            for e in l])
+                          for l in  [included, declares, self.objects, [self.camera],
+                              self.atmospheric, global_settings]
+                          for e in l])
 
     def copy(self):
         return deepcopy(self)
@@ -87,11 +87,11 @@ class Scene:
         """
 
         if auto_camera_angle and width is not None:
-            self.camera=self.camera.add_args(['right',[1.0*width/height, 0,0]])
+            self.camera = self.camera.add_args(['right', [1.0*width/height, 0,0]])
 
         return render_povstring(str(self), outfile, height, width,
-                               quality, antialiasing, remove_temp, show_window,
-                               tempfile, includedirs, output_alpha)
+                                quality, antialiasing, remove_temp, show_window,
+                                tempfile, includedirs, output_alpha)
 
 
 class POVRayElement:
