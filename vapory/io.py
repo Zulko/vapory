@@ -10,7 +10,7 @@ from .config import POVRAY_BINARY
 try:
     import numpy
     numpy_found=True
-except IOError:
+except:
     numpy_found=False
 
 try:
