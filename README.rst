@@ -63,7 +63,7 @@ In Vapory you create a scene, and then render it:
 
     scene.render("my_scene.png", # output to a PNG image file
       width = 300, height=200, # in pixels. Determines the camera ratio.
-      antialiasing = 0.01 # The nearer from zero, the more precise the image.
+      antialiasing = 0.01, # The nearer from zero, the more precise the image.
       quality=1) # quality=1 => no shadow/reflection, quality=10 is 'normal'
 
     # passing 'ipython' as argument at the end of an IPython Notebook cell
